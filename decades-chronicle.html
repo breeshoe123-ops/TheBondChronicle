@@ -1,0 +1,3486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Bond Chronicle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IM+Fell+English&family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:wght@400;500&display=swap" 
+rel="stylesheet">
+<style>
+  :root{
+    --ink: #21281f;
+    --paper: #EEE6CE;
+    --paper-light: #F7F0DC;
+    --spine: #2f3d2f;
+    --spine-dark: #232e23;
+    --gold: #a9863f;
+    --gold-light: #c9a15f;
+    --spine-gold: #b08a47;
+    --wax: #7a2e2e;
+    --wax-light: #9c4a44;
+    --line: rgba(33,40,31,0.16);
+    --line-strong: rgba(33,40,31,0.32);
+    --green-alive: #3d5a3d;
+    --shadow: 0 2px 10px rgba(33,40,31,0.12);
+  }
+  @font-face {
+  font-family: 'Manuskriptgotisch';
+  src: url('Manuskriptgotisch-X3yd.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;}
+  body { font-family: 'Source Sans 3', sans-serif; background-color: var(--paper); background-image: url('https://t4.ftcdn.net/jpg/00/94/93/01/360_F_94930136_2rJCn33glIkmMpXdHFb474gTCF7ET38M.jpg'),
+linear-gradient(rgba(255,255,255,.12), rgba(117,91,48,.035)), repeating-linear-gradient(0deg, rgba(91,70,36,.035) 0, rgba(91,70,36,.035) 1px, transparent 1px, transparent 4px), repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0, rgba(255,255,255,.08) 1px, transparent 1px, transparent 7px); background-size: auto, 28px 28px, 28px 28px; background-attachment: scroll; color: var(--ink); -webkit-font-smoothing: antialiased; }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image: radial-gradient(circle at 18% 22%, rgba(169,134,63,0.08) 0, transparent 2px), radial-gradient(circle at 72% 68%, rgba(122,46,46,0.05) 0, transparent 2px);
+    background-size:19px 17px, 23px 21px;
+    pointer-events:none;
+  }
+  h1,h2,h3,.display{ font-family:'Fraunces', serif; letter-spacing:0.01em; }
+  #app{ display:flex; min-height:100vh; }
+.rules-copy h3 {
+  text-align: center;
+  font-size: 1.6rem;
+}
+  .page-head h2, .sim-hero h3, .j-day, .decade-year{ font-family:'IM Fell English','Fraunces',serif; }
+  .spine{
+    width:220px; flex-shrink:0;
+    height:100vh;
+    background-image: url('https://cdn.phototourl.com/free/2026-09-14-8a3c7b6c-a261-4b41-b785-b4cb2d70dee3.png');
+    background-size: 100% 100%;
+    background-color: #181C12;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: var(--spine-gold);
+    padding: 64px 0 28px;
+    position:sticky; top:0;
+    box-shadow: inset -10px 0 18px rgba(0,0,0,0.24), inset 8px 0 14px rgba(201,161,95,0.08), 5px 0 0 rgba(169,134,63,0.28);
+  }
+  .spine::before{
+    content:"";
+    position:absolute; inset:12px 10px;
+    border:1px solid rgba(176,138,71,0.28);
+    box-shadow: inset 0 0 0 3px rgba(24,28,18,0.2), inset 0 0 0 4px rgba(176,138,71,0.14);
+    pointer-events:none;
+  }
+  .spine-title{
+    padding: 0 8px 10px;
+    margin-bottom: 10px;
+    text-align:center;
+  }
+  .spine-title .eyebrow{
+    font-family:'Manuskriptgotisch','IM Fell English',serif;
+    width:180px; 
+    max-width:100%; 
+    font-size:20px; 
+    letter-spacing:0.02em; 
+    color: var(--spine-gold);
+    white-space:normal; 
+    display:block; margin:0 auto 10px;
+    line-height:1.05; 
+    text-align:center;
+    transform: translateY(-20px);
+    mix-blend-mode: color-dodge;
+  }
+  .spine-title h1{ font-family:'IM Fell English','Fraunces',serif; font-size:24px; margin:0; line-height:1.2; font-weight:400; letter-spacing:0.04em; color:var(--spine-gold); }
+  .spine-title h1, .spine-nav button, .spine-foot button, .autosave-note{ text-shadow:0 1px 1px rgba(20,18,10,0.85), 1px 0 0 rgba(20,18,10,0.35); }
+  .spine-nav button.active{ text-shadow:1px 1px 0 #6b4e20, 0 0 5px rgba(120,88,32,0.78); }
+  nav.spine-nav{ display:flex; flex-direction:column; align-items:center; }
+  .spine-nav button{
+    all:unset; cursor:pointer;
+    width:100%;
+    padding: 13px 18px;
+    font-family:'IM Fell English','Fraunces',serif;
+    font-size:16px;
+    letter-spacing:0.035em;
+    color: var(--spine-gold);
+    border:0;
+    text-align:center;
+    transition: all .15s ease;
+  }
+  .spine-nav button:hover{ color: var(--spine-gold); background: transparent; }
+  .spine-nav button.active{
+    color: var(--spine-gold);
+    background: transparent;
+    box-shadow:none;
+    font-weight: 400;
+  }
+  .spine-nav button.active::before, .spine-nav button.active::after{ content:"✦"; color:var(--spine-gold); margin:0 8px; font-size:11px; vertical-align:middle; }
+  .spine-foot{
+    position:absolute; bottom:35px; left:0; right:0;
+    padding: 0 18px;
+    display:flex; flex-direction:column; gap:0;
+    align-items:center; text-align:center;
+  }
+  .spine-foot button{
+    all:unset; cursor:pointer;
+    font-family:'IM Fell English','Fraunces',serif;
+    font-size:13px; letter-spacing:0.02em; color: var(--spine-gold);
+    padding:0;
+  }
+  .spine-foot button:hover{ color: var(--spine-gold); }
+  .autosave-note{ font-family:'IM Fell English','Fraunces',serif; font-size:11px; color: var(--spine-gold); margin-top:0; line-height:1.1; }
+  #file-input{ display:none; }
+
+  main{ flex:1; padding: 40px 48px 60px; max-width: none; }
+  .page-head{ margin-bottom: 30px; }
+  .page-head .eyebrow{ font-size:12px; letter-spacing:0.1em; color: var(--wax); font-weight:600; }
+  .page-head h2{ font-size:30px; margin: 4px 0 6px; }
+  .page-head p{ margin:0; color: rgba(33,40,31,0.65); max-width: 62ch; line-height:1.5; }
+
+  .card{
+    background: transparent;
+    border-image-slice: 172 172 172 172;
+    border-image-width: 30px 30px 30px 30px;
+  border-image-outset: 20px;
+  border-image-repeat: repeat;
+  border-image-source: url("border.png");
+  }
+  .card + .card{ margin-top: 22px; } 
+  .card-pad{ padding: 24px 26px; }
+
+  .line-art {
+    width: 85%;
+    height: 11px;
+    margin: 0 auto 8px;
+    position: relative;
+  }
+  .line-art::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("lineart3.png");
+    background-repeat: stretch;
+    background-position: center;
+    background-size: contain;
+    height: 11px;
+  }
+
+  .today-hero{ display:flex; align-items:center; gap:26px; flex-wrap:wrap; }
+  .today-day-input{
+    font-family:'Fraunces', serif; font-size:56px; line-height:1;
+    font-weight:700; color: var(--spine); width: 140px;
+    border:none; background:transparent; padding:0;
+  }
+  .card + .card {
+    margin-top: 70px;
+  }
+  .today-day-input:focus{ outline: none; border-bottom: 2px solid var(--gold); }
+  .today-meta{ display:flex; flex-direction:column; gap:4px; }
+  .today-meta .weekday{ font-size:18px; font-weight:600; color: var(--wax); }
+  .today-meta .year{ font-size:13px; color: rgba(33,40,31,0.6); }
+  .day-controls{ margin-left:auto; }
+  button.btn{
+    all:unset;
+    cursor:pointer;
+    padding:9px 14px;
+    border-radius:3px;
+    font-family:'Source Sans 3';
+    font-size:20px;
+    font-weight:600;
+    background:var(--paper-light);
+    color:var(--spine);
+    border:1px solid var(--line-strong);
+    transition:background .15s ease;
+  }
+  button.btn:hover{ background:var(--paper); }
+  button.btn.green{ background:var(--spine); color:var(--paper-light); }
+  button.btn.green:hover{ background:var(--spine-dark); }
+  button.btn.selected{ background:var(--spine); color:var(--paper-light); }
+  button.btn.selected:hover{ background:var(--spine-dark); }
+  button.btn.red{ background:var(--wax); color:var(--paper-light); }
+  button.btn.red:hover{ background:var(--wax-light); }
+  button.btn.small{ padding:6px 10px; font-size:18px; }
+
+  .text-link{ color:var(--wax); font-size:12.5px; font-weight:600; text-decoration:underline; text-underline-offset:2px; cursor:pointer; display:inline-block; }
+  .text-link:hover{ color:var(--wax-light); }
+
+  .section-title{
+    font-size:20px; 
+    letter-spacing:0.06em; 
+    font-weight:600; 
+    color: var(--spine);
+    margin: 0 0 14px; 
+    padding-bottom:3px; 
+    display:flex; 
+    justify-content:space-between; 
+    align-items:center;
+  }
+
+  .cal-strip{ display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; }
+  .cal-card{
+    flex-shrink:0; width:126px; min-height:152px; text-align:center; padding:10px 8px;
+    border:1px solid var(--line); border-radius:4px; background:#fff;
+    cursor:pointer; transition: border-color .15s ease;
+  }
+  .cal-card:hover{ border-color: var(--gold); }
+  .cal-card.today{ background: var(--spine); border-color: var(--spine); }
+  .cal-card.today .cal-dow, .cal-card.today .cal-daynum{ color: var(--paper-light); }
+  .cal-card.today .day-events{ color: var(--paper-light); }
+  .cal-card .cal-dow{ font-size:10px; letter-spacing:0.05em; color: rgba(33,40,31,0.5); }
+  .cal-card .cal-daynum{ font-family:'Fraunces',serif; font-size:20px; font-weight:700; margin:2px 0; }
+  .cal-card .cal-dot{ height:5px; width:5px; border-radius:50%; background: var(--wax); margin: 0 auto; visibility:hidden; }
+  .cal-card.has-event .cal-dot{ visibility:visible; }
+  .day-events{ margin-top:7px; text-align:left; font-size:10px; line-height:1.25; color:var(--wax); }
+  .sim-link{ color:inherit; text-decoration:none; cursor:pointer; font-weight:600; }
+  .roster-portrait{ width:36px; height:36px; object-fit:cover; vertical-align:middle; margin-right:8px; border:1px solid var(--line-strong); background:rgba(47,61,31,.08); border-radius:3px; }
+  .roster-portrait-empty{ display:inline-block; }
+  .upcoming-list li{ cursor:pointer; }
+  .calendar-year-band{ display:flex; gap:8px; margin-bottom:6px; }
+  .calendar-year-band span{ flex:1; font:600 12px 'Fraunces',serif; color:var(--wax); text-align:center; border-bottom:3px solid var(--line-strong); padding-bottom:4px; }
+  .calendar-year-band .year-group{ flex:1; display:flex; justify-content:center; font:600 12px 'Fraunces',serif; color:var(--wax); border-bottom:3px solid var(--line-strong); padding-bottom:4px; }
+  .calendar-year-band .year-group span{ border:0; padding:0; }
+  .calendar-header-card{ margin-bottom:22px; }
+  .calendar-view-row{ display:flex; align-items:center; justify-content:center; gap:18px; flex-wrap:wrap; }
+  .calendar-view-group{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .calendar-view-label, .calendar-filter-label{ font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:rgba(33,40,31,.52); font-weight:700; }
+  .calendar-modes{ display:flex; justify-content:center; gap:25px; flex-wrap:wrap; }
+  .calendar-location-row{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-top:18px; padding-top:16px; border-top:1px solid var(--line);
+    gap:10px; flex-wrap:wrap;
+  }
+  .calendar-location-row .today-btn-wrap{ flex:0 0 auto; min-width:90px; }
+  .calendar-location-row .today-btn{ white-space:nowrap; }
+  .calendar-location-controls{ display:flex; align-items:center; justify-content:center; gap:10px; flex:1; }
+  .calendar-location-row .calendar-location-title{ min-width:150px; text-align:center; font:600 18px 'Fraunces',serif; color:var(--spine); }
+  .calendar-location-row .today-btn-spacer{ flex:0 0 auto; min-width:90px; }
+  .calendar-filters{ display:flex; align-items:center; justify-content:center; gap:10px; margin-top:18px; padding-top:16px; border-top:1px solid var(--line); flex-wrap:wrap; }
+  .calendar-search-input{ padding:8px 10px; border:1px solid var(--line-strong); border-radius:3px; font-family:'Source Sans 3'; font-size:13px; background:var(--paper-light); color:var(--ink); width:230px; }
+  #jump-to-year{ -moz-appearance:textfield; }
+  #jump-to-year::-webkit-outer-spin-button, #jump-to-year::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+  .filter-dropdown{ position:relative; }
+  .filter-dropdown-btn{ all:unset; cursor:pointer; display:flex; align-items:center; gap:8px; padding:8px 12px; border:1px solid var(--line-strong); border-radius:3px; font-family:'Source Sans 3'; font-size:13px; background:var(--paper-light); color:var(--ink); min-width:180px; white-space:nowrap; transition:border-color .15s ease; box-sizing:border-box; }
+  .filter-dropdown-btn:hover{ border-color:var(--gold); }
+  .filter-dropdown-btn .fd-arrow{ margin-left:auto; font-size:10px; transition:transform .15s ease; }
+  .filter-dropdown-btn.open .fd-arrow{ transform:rotate(180deg); }
+  .filter-dropdown-panel{ display:none; position:absolute; top:calc(100% + 4px); left:0; z-index:100; background:var(--paper-light); border:1px solid var(--line-strong); border-radius:3px; box-shadow:0 6px 20px rgba(33,40,31,0.15); min-width:200px; padding:6px 0; }
+  .filter-dropdown-panel.open{ display:block; }
+  .filter-dropdown-item{ display:flex; align-items:center; gap:10px; padding:8px 14px; cursor:pointer; font-family:'Source Sans 3'; font-size:13px; color:var(--ink); transition:background .1s ease; user-select:none; }
+  .filter-dropdown-item:hover{ background:rgba(169,134,63,0.1); }
+  .filter-dropdown-item input[type=checkbox]{ accent-color:var(--spine); width:14px; height:14px; flex-shrink:0; cursor:pointer; }
+  .filter-dropdown-item.all-item{ border-bottom:1px solid var(--line); margin-bottom:4px; padding-bottom:10px; }
+  .calendar-filters .spacer{ flex:1; }
+  .calendar-content-card{ min-height:120px; }
+  .calendar-scroll-top{
+    position:fixed !important; right:48px !important; left:auto !important; bottom:24px !important; z-index:1000;
+    opacity:0 !important; pointer-events:none !important; transform:translateY(8px) !important;
+    transition:opacity .18s ease, transform .18s ease; box-shadow:var(--shadow);
+  }
+  .calendar-scroll-top.visible{ opacity:1 !important; pointer-events:auto !important; transform:translateY(0) !important; }
+  .decade-year-card{ min-height:220px; padding:22px; border:1px solid var(--line); background:#fff; border-radius:4px; box-shadow:var(--shadow); cursor:pointer; transition:border-color .15s ease, transform .15s ease; display:flex; flex-direction:column; }
+  .decade-year-card:hover{ border-color:var(--gold); transform:translateY(-1px); }
+  .decade-year-card.current{ border:2px solid var(--wax); padding:21px; }
+  .decade-year-card .year-title{ font:600 25px 'Fraunces',serif; color:var(--spine); margin-bottom:12px; }
+  .decade-year-card .year-summary{ font-size:12px; color:rgba(33,40,31,.58); margin-bottom:12px; }
+  .decade-year-card .year-preview{ display:flex; flex-direction:column; gap:7px; margin-top:auto; }
+  .decade-year-card .year-preview-line{ font-size:12px; color:var(--wax); line-height:1.3; }
+  .decade-year-card .year-preview-day{ font-weight:700; color:var(--spine); margin-right:6px; }
+  .timeline-year-link{ all:unset; cursor:pointer; display:block; margin:26px 0 10px; font:600 20px 'Fraunces',serif; color:var(--spine); }
+  .timeline-year-link:first-child{ margin-top:0; }
+  .timeline-year-link:hover{ color:var(--wax); }
+  .calendar-toolbar{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:18px; flex-wrap:wrap; }
+  .calendar-toolbar .controls{ display:flex; gap:8px; align-items:center; }
+  
+  .event-icon-btn { all:unset; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; margin-right:6px; vertical-align:middle; border-radius:3px; background:transparent; transition:background 0.15s ease; }
+  .event-icon-btn img { width:14px; height:14px; object-fit:contain; }
+  .event-icon-btn:hover { background:rgba(47,61,47,0.2); }
+  .year-day .event-line, .year-day-large .event-line, .day-hero-card .event-line { display:flex; align-items:center; margin-top:6px; font-size:11px; color:var(--wax); line-height:1.3; }
+  .day-view-events li { display:flex; align-items:center; padding:10px 0; border-bottom:1px dashed var(--line); color:var(--wax); }
+
+  .section-title .right{ display:flex; gap:8px; }
+  .decade-year{ margin:26px 0 10px; font:600 20px 'Fraunces',serif; color:var(--spine); }
+  .decade-year:first-child{ margin-top:0; }
+  .year-grid{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:8px; }
+  .year-day{ min-height:152px; padding:8px; border:1px solid var(--line); background:#fff; border-radius:3px; }
+  .year-day.current{ border:2px solid var(--wax); padding:7px; }
+  .year-day .day-label{ font:600 15px 'Fraunces',serif; color:var(--spine); }
+  .year-day .day-week{ display:block; font-size:10px; color:rgba(33,40,31,.52); }
+  .day-view-events{ list-style:none; padding:0; margin:0; }
+
+  .year-grid-large{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:18px; }
+  .year-day-large{ min-height:240px; padding:22px 24px; border:1px solid var(--line); background:#fff; border-radius:4px; box-shadow:var(--shadow); display:flex; flex-direction:column; }
+  .year-day-large.current{ border:2px solid var(--wax); padding:21px 23px; }
+  .year-day-large .day-label{ font:600 21px 'Fraunces',serif; color:var(--spine); display:block; }
+  .year-day-large .day-week{ display:block; font-size:12.5px; color:rgba(33,40,31,.55); margin-bottom:14px; }
+  .year-day-large .event-line{ font-size:13px; margin-top:9px; }
+  .year-day-large .event-line .event-icon-btn{ width:22px; height:22px; }
+  .year-day-large .event-line .event-icon-btn img{ width:15px; height:15px; }
+
+  .day-hero-wrap{ display:flex; justify-content:center; }
+  .day-hero-card{ width:100%; max-width:820px; min-height:300px; padding:36px 44px; border:1px solid var(--line); background:#fff; border-radius:4px; box-shadow:var(--shadow); }
+  .day-hero-card.current{ border:2px solid var(--wax); padding:35px 43px; }
+  .day-hero-card .day-label{ font:600 30px 'Fraunces',serif; color:var(--spine); display:block; }
+  .day-hero-card .day-week{ display:block; font-size:15px; color:rgba(33,40,31,.55); margin:4px 0 18px; }
+  .day-hero-card .day-view-events{ margin-top:4px; }
+  .sim-hero{ display:flex; gap:24px; align-items:flex-start; }
+  .sim-photo-col{ flex-shrink:0; width:200px; }
+  .sim-hero-info{ flex:1; min-width:0; }
+  .sim-photo{ width:100%; aspect-ratio:1/1; object-fit:cover; object-position:center top; background:rgba(47,61,47,.08); border:2px solid var(--line-strong); border-radius:4px; display:block; }
+  .sim-photo-empty{ display:flex; align-items:center; justify-content:center; color:rgba(33,40,31,.4); font:22px 'Fraunces',serif; border-radius:4px; border:2px solid var(--line-strong); aspect-ratio:1/1; width:100%; background:rgba(47,61,47,.05); }
+  .sim-info-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:20px; }
+  .sim-info-grid label, .library-field label{ display:block; font-size:12px; color:rgba(33,40,31,.6); margin-bottom:5px; }
+  .sim-info-grid input, .sim-info-grid select, .library-field input{ width:100%; padding:8px; border:1px solid var(--line-strong); border-radius:3px; background:#fff; font-family:'Source Sans 3'; font-size:13.5px; }
+  .tag-row{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px; min-height:22px; }
+  .tag-chip{ display:inline-flex; align-items:center; gap:6px; background:rgba(47,61,47,0.12); color:var(--spine); font-size:12px; font-weight:600; padding:4px 9px; border-radius:3px; }
+  .tag-chip.static{ background:rgba(47,61,47,0.08); }
+  .tag-chip button{ all:unset; cursor:pointer; font-size:14px; line-height:1; color:var(--wax); }
+  .empty-tag{ color:rgba(33,40,31,0.4); font-size:12.5px; font-style:italic; }
+  .tag-input-row{ display:flex; gap:8px; }
+  .tag-input-row input{ flex:1; padding:8px; border:1px solid var(--line-strong); border-radius:3px; background:#fff; font-size:13px; }
+  /* TAL select2 dropdown */
+  .tal-select-wrap{ position:relative; }
+  .tal-select-input{ width:100%; padding:8px 10px; border:1px solid var(--line-strong); border-radius:3px; background:#fff; font-family:'Source Sans 3'; font-size:13px; color:var(--ink); }
+  .tal-select-input:focus{ outline:none; border-color:var(--gold); }
+  .tal-dropdown{ display:none; position:absolute; top:calc(100% + 2px); left:0; right:0; z-index:200; width: 100% !important; box-sizing: border-box !important;background:var(--paper-light); border:1px solid var(--line-strong);
+    border-radius:3px; box-shadow:0 6px 18px rgba(33,40,31,0.15); max-height:180px; overflow-y:auto; }
+  .tal-dropdown.open{ display:block; }
+  .tal-option{ padding:8px 12px; font-size:13px; cursor:pointer; color:var(--ink); transition:background .1s ease; display: flex !important;justify-content: space-between !important; align-items: center !important; width: 100% !important;
+  box-sizing: border-box !important; }
+  .tal-option:hover, .tal-option.highlighted{ background:rgba(169,134,63,0.12); }
+  .tal-option.is-added{ color:rgba(33,40,31,.35); cursor:default; }
+  .tal-option.is-added:hover{ background:transparent; }
+  .tal-create{ padding:8px 12px; font-size:13px; cursor:pointer; color:var(--wax); font-weight:600; border-top:1px solid var(--line); transition:background .1s ease; }
+  .tal-create:hover{ background:rgba(122,46,46,0.07); }
+  .tal-empty{ padding:10px 12px; font-size:12.5px; color:rgba(33,40,31,.4); font-style:italic; }
+  .notes-block{ margin-top:20px; }
+  .notes-block label{ display:block; font-size:12px; color:rgba(33,40,31,.6); margin-bottom:5px; }
+  .notes-textarea{ width:100%; min-height:110px; padding:10px; border:1px solid var(--line-strong); border-radius:3px; font-family:'Source Serif 4', serif; font-size:14px; background:#fff; resize:vertical; }
+  /* Sim info card section headings */
+  .sim-section-head{
+    font-family:'IM Fell English','Fraunces',serif;
+    font-size:13px; letter-spacing:0.09em; text-transform:uppercase;
+    color:var(--wax); margin:28px 0 14px; padding-bottom:6px;
+    border-bottom:1px solid var(--line-strong);
+    display:flex; align-items:center; gap:10px;
+  }
+  .sim-section-head::before{ content:"✦"; font-size:9px; opacity:.55; flex-shrink:0; }
+  /* Delete danger zone */
+  .sim-delete-zone{
+    margin-top:28px; padding-top:20px;
+    border-top:1px dashed rgba(122,46,46,0.3);
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  }
+  .sim-delete-zone p{ margin:0; font-size:12.5px; color:rgba(33,40,31,.5); font-style:italic; }
+  .delete-confirm-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .delete-confirm-row .confirm-msg{ font-size:13px; color:var(--wax); font-weight:600; }
+  /* Sim status badge */
+  .sim-status-badge{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:12px; font-weight:600; letter-spacing:0.03em;
+    padding:3px 10px; border-radius:2px;
+    background:rgba(61,90,61,0.1); color:var(--green-alive);
+  }
+  .sim-status-badge.deceased{ background:rgba(122,46,46,0.1); color:var(--wax); }
+  /* Sim hero tighter */
+  .sim-hero{ display:flex; gap:28px; align-items:flex-start; }
+  .sim-hero-info h3{ font-family:'IM Fell English','Fraunces',serif; font-size:26px; margin:0 0 6px; color:var(--spine); line-height:1.15; }
+  /* Stable stacked sim name in profile view/edit */
+  .sim-profile-name-wrap{ text-align:center; margin-bottom:10px; }
+  .sim-profile-name{ font-family:'IM Fell English','Fraunces',serif; font-size:38px; color:var(--spine); line-height:1.15; }
+  .sim-profile-name > div{ min-height:44px; }
+  .sim-profile-name-input{ display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .sim-profile-name-input input{
+    width:min(100%, 360px); height:44px; box-sizing:border-box;
+    text-align:center; font-family:'IM Fell English','Fraunces',serif; font-size:32px;
+    color:var(--spine); background:rgba(255,255,255,.72);
+    border:1px solid var(--line-strong); border-radius:3px; padding:5px 10px;
+  }
+  .sim-profile-name-input input:last-child{ color:rgba(33,40,31,.7); }
+  .sim-profile-name-input input:focus{ outline:none; border-color:var(--gold); }
+  .sim-hero-meta{ font-size:13px; color:rgba(33,40,31,.6); line-height:1.6; margin:0; }
+  .toast-note{
+    position:fixed; bottom:26px; left:50%; transform:translate(-50%, 12px);
+    background: var(--spine); color: var(--paper-light); padding:10px 20px;
+    border-radius:4px; font-size:13px; font-weight:600; letter-spacing:0.02em;
+    opacity:0; transition: opacity .25s ease, transform .25s ease; z-index:200; box-shadow: var(--shadow);
+    pointer-events:none;
+  }
+  .toast-note.show{ opacity:1; transform:translate(-50%, 0); }
+  .milestone-table{ width:100%; border-collapse:collapse; font-size:15px; }
+  .milestone-table th,.milestone-table td{ text-align:left; padding:10px 9px; border-bottom:1px solid var(--line); }
+  .milestone-table th{ font-size:12px; letter-spacing:0.05em; color:rgba(33,40,31,0.55); font-weight:600; }
+  .milestone-day-link{ color:var(--wax); font-weight:600; text-decoration:underline; text-underline-offset:2px; cursor:pointer; font-size:15px; }
+  .milestone-day-link:hover{ color:var(--wax-light); }
+  .journal-page{ background:rgba(255,255,255,.28); border-left:5px solid var(--gold); font-family:'Source Serif 4',serif; }
+  .journal-page .journal-entry{ padding:18px 8px; }
+  .journal-page .journal-entry textarea{ min-height:70px; }
+  .empty-journal{ padding:24px 0; color:rgba(33,40,31,.48); font-style:italic; }
+  .calendar-empty{ color:rgba(33,40,31,.45); font-size:13px; font-style:italic; }
+  .rule-books{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .rule-book{ display:flex; align-items:center; gap:12px; padding:16px; border:1px solid var(--line); background:#fff; text-align:left; cursor:pointer; border-radius:3px; }
+  .rule-book:hover{ border-color:var(--gold); }
+  .book-icon{ font-size:26px; color:var(--wax); }
+  .rule-book strong{ display:block; font-family:'Fraunces',serif; font-size:16px; }
+  .rule-book span{ display:block; font-size:12px; color:rgba(33,40,31,.55); margin-top:2px; }
+  .rules-copy{ line-height:1.65; color:rgba(33,40,31,.76); }
+  .rules-copy p{ margin:0 0 12px; }
+
+  .upcoming-list{ list-style:none; margin:0; padding:0; }
+  .upcoming-list li{ display:flex; align-items:baseline; gap:14px; padding: 10px 0; border-bottom: 1px dashed var(--line); }
+  .upcoming-list li:last-child{ border-bottom:none; }
+  .upcoming-list .u-day{ font-family:'Fraunces', serif; font-weight:600; color: var(--wax); width:64px; flex-shrink:0; font-size:15px; }
+  .upcoming-list .u-text{ flex:1; font-size:14.5px; }
+  .upcoming-list .u-sub{ font-size:12.5px; color: rgba(33,40,31,0.55); }
+  .tag{ display:inline-block; font-size:11px; font-weight:600; padding:2px 7px; border-radius:2px; letter-spacing:0.02em; background: rgba(47,61,47,0.12); color: var(--spine); }
+
+  .journal-new{ display:flex; gap:8px; align-items:center; margin-bottom:20px; }
+  .journal-new input{ width:110px; padding:8px 10px; border:1px solid var(--line-strong); border-radius:3px; font-size:13.5px; }
+  .journal-entry{ padding:16px 0; border-bottom:1px solid var(--line); }
+  .journal-entry:last-child{ border-bottom:none; }
+  .j-head{ display:flex; gap:10px; align-items:baseline; margin-bottom:8px; }
+  .j-day{ font-weight:700; font-family:'Fraunces',serif; color:var(--spine); font-size:17px; }
+  .j-dow{ font-size:12px; color: rgba(33,40,31,0.55); text-transform:capitalize; }
+  .j-events{ list-style:none; margin:0 0 8px; padding:0; }
+  .j-events li{ font-size:13.5px; padding:3px 0; color: var(--wax-light); }
+  .j-events li::before{ content:"· "; }
+  .journal-entry textarea{ width:100%; border:1px solid transparent; background:transparent; resize:vertical; font-family:'Source Serif 4', serif; font-size:14.5px; color: var(--ink); padding:6px 0; min-height:22px; border-radius:3px; }
+  .journal-entry textarea:focus{ outline:none; border-bottom:1px solid var(--line-strong); }
+  .journal-entry textarea::placeholder{ color: rgba(33,40,31,0.35); }
+  .log-empty{ color: rgba(33,40,31,0.45); font-size:13.5px; font-style:italic; padding:6px 0; }
+
+  details.settings{ margin-top:20px; }
+  details.settings summary{ cursor:pointer; font-size:13px; color: rgba(33,40,31,0.6); font-weight:600; }
+  .offsets-grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; margin-top:14px; }
+  .offsets-grid label{ font-size:12px; color: rgba(33,40,31,0.6); display:block; margin-bottom:4px; }
+  .offsets-grid input{ width:100%; padding:7px 8px; border:1px solid var(--line-strong); border-radius:3px; font-size:13px; background:#fff; }
+
+  .roster-stats{ display:flex; gap:0; flex-wrap:wrap; text-align:center; justify-content:center; }
+  .stat{ padding: 0 26px; border-right:1px solid var(--line); text-align:center; }
+  .stat:first-child{ padding-left:0; }
+  .stat:last-child{ border-right:none; }
+  .stat .num{ font-family:'Fraunces',serif; font-size:28px; font-weight:700; color: var(--spine); }
+  .stat .lbl{ font-size:11.5px; color: rgba(33,40,31,0.55); letter-spacing:0.04em; }
+  .stat.dead .num{ color: var(--wax); }
+  .roster-stats .stat:first-child{ border-right:2px solid var(--gold); }
+  .roster-stats .stat:nth-child(4){ border-left:2px solid var(--gold); }
+
+  .roster-toolbar{ display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+  .roster-toolbar .roster-view-btns{ display:flex; gap:8px; flex-shrink:0; }
+  .roster-toolbar input[type=search]{ padding:9px 12px; border:1px solid var(--line-strong); border-radius:3px; font-size:13.5px; width:200px; flex-shrink:0; background:var(--paper); }
+  .roster-toolbar .roster-spacer{ flex:1; }
+  .roster-views{ display:contents; }
+  .family-tree{ overflow-x:auto; padding:10px 24px 28px; }
+  .tree-level{ display:flex; flex-direction:column; align-items:center; }
+  .tree-gen-row{ display:flex; align-items:flex-start; justify-content:center; gap:0; min-width:max-content; }
+  .tree-gen-label{ text-align:center; font:600 11px 'Fraunces',serif; letter-spacing:.08em; text-transform:uppercase; color:var(--wax); padding:4px 14px; border:1px solid var(--line); border-radius:2px; background:var(--paper); margin-bottom:0; display:inline-block; }
+  .tree-gen-header{ display:flex; justify-content:center; padding:28px 0 0; }
+  .tree-unit{ display:flex; flex-direction:column; align-items:center; margin:0 20px; }
+  .tree-pair{ display:flex; align-items:flex-start; gap:0; position:relative; }
+  .tree-marriage-bar{ width:32px; flex-shrink:0; display:flex; flex-direction:column; align-items:center; padding-top:52px; }
+  .tree-marriage-bar::before{ content:"♥"; font-size:11px; color:var(--wax); opacity:.65; line-height:1; }
+  .tree-marriage-bar::after{ content:""; display:block; width:2px; flex:1; background:var(--gold); opacity:.5; margin-top:5px; min-height:16px; }
+  .tree-drop-stem{ width:2px; background:var(--gold); opacity:.45; }
+  .tree-child-bar-wrap{ display:flex; flex-direction:column; align-items:center; width:100%; }
+  .tree-child-h-bar{ height:2px; background:var(--gold); opacity:.45; width:100%; }
+  .tree-children-row{ display:flex; align-items:flex-start; justify-content:center; gap:0; }
+  .tree-child-unit{ display:flex; flex-direction:column; align-items:center; margin:0 10px; }
+  .tree-child-drop{ width:2px; height:22px; background:var(--gold); opacity:.45; }
+  .tree-node{ position:relative; width:130px; border:1px solid var(--line-strong); border-top:3px solid var(--gold); border-radius:3px; background:var(--paper-light); box-shadow:0 3px 9px rgba(33,40,31,.1); cursor:pointer; text-align:left; overflow:hidden; transition:border-color .15s, transform .15s; }
+  .tree-node:hover{ border-color:var(--gold); transform:translateY(-2px); }
+  .tree-node-portrait{ width:100%; aspect-ratio:1/1; object-fit:cover; object-position:center top; display:block; background:rgba(47,61,47,.08); }
+  .tree-node-portrait-empty{ width:100%; aspect-ratio:1/1; background:rgba(47,61,47,.07); display:flex; align-items:center; justify-content:center; color:rgba(33,40,31,.3); font:18px 'Fraunces',serif; }
+  .tree-node-body{ padding:10px 12px 11px; }
+  .tree-node-name{ font:600 14px 'Fraunces',serif; color:var(--spine); line-height:1.2; }
+  .tree-node-meta{ margin-top:4px; color:rgba(33,40,31,.55); font-size:10.5px; }
+  .tree-node .status-dot{ margin-right:4px; vertical-align:middle; }
+
+  table.roster{ width:100%; border-collapse: collapse; font-size:13.5px; }
+  table.roster th{ text-align:left; font-size:11px; letter-spacing:0.05em; color: rgba(33,40,31,0.55); padding: 0 10px 10px; border-bottom: 1px solid var(--line-strong); font-weight:600; }
+  table.roster td{ padding: 12px 10px; border-bottom: 1px solid var(--line); vertical-align:middle; }
+  table.roster tr:hover td{ background: rgba(169,134,63,0.05); cursor:pointer; }
+  .sim-name{ font-weight:600; }
+  .sim-name .fam{ font-weight:400; color: rgba(33,40,31,0.55); font-size:12px; display:block; }
+  .status-dot{ display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; }
+  .status-dot.alive{ background: var(--green-alive); }
+  .status-dot.deceased{ background: var(--wax); }
+  .add-row{ text-align:center; padding: 16px; color: rgba(33,40,31,0.5); font-size:13px; cursor:pointer; border-top: 1px dashed var(--line-strong); }
+  .add-row:hover{ color: var(--wax); }
+
+  .modal-overlay{ position:fixed; inset:0; background: rgba(33,40,31,0.45); display:flex; align-items:center; justify-content:center; z-index:50; }
+  .modal{ background: var(--paper-light); width: 560px; max-width:92vw; max-height:88vh; overflow-y:auto; overflow-x:visible; border-radius:4px; box-shadow: 0 12px 40px rgba(0,0,0,0.3); border-top: 4px solid var(--wax); }
+  .sim-profile-header{ display:flex; justify-content:flex-end; padding:25px 18px 0; }
+  .modal-pad{ padding: 10px 28px 28px; }
+  .modal h3{ margin:0 0 18px; font-size:20px; }
+  .form-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
+  .form-grid .full{ grid-column: 1 / -1; }
+  .form-grid label{ font-size:12px; color: rgba(33,40,31,0.6); display:block; margin-bottom:5px; }
+  .form-grid input, .form-grid select, .form-grid textarea{ width:100%; padding:9px 10px; border:1px solid var(--line-strong); border-radius:3px; font-family:'Source Sans 3'; font-size:13.5px; background:#fff; }
+  .form-grid textarea{ min-height:60px; resize:vertical; font-family:'Source Serif 4', serif; }
+  .modal-actions{ display:flex; justify-content:space-between; margin-top:22px; }
+  .modal-actions .right{ display:flex; gap:10px; }
+
+  .computed-box{ background: rgba(47,61,47,0.06); border:1px solid var(--line); border-radius:3px; padding:12px 14px; font-size:12.5px; color: rgba(33,40,31,0.7); margin-top:16px; line-height:1.7; }
+  .computed-box b{ color: var(--spine); }
+
+  /* ── Family Relations table ── */
+  .relations-table{ width:100%; border-collapse:collapse; font-size:13px; }
+  .relations-table th,.relations-table td{ text-align:left; padding:9px; border-bottom:1px solid var(--line); }
+  .relations-table th{ font-size:11px; letter-spacing:0.05em; color:rgba(33,40,31,0.55); font-weight:600; }
+  .relations-table .rel-name-cell{ font-weight:600; color:var(--spine); cursor:pointer; text-decoration:underline; text-underline-offset:2px; }
+  .relations-table .rel-name-cell:hover{ color:var(--wax); }
+  /* Marriage & child entries within relations section */
+  .marriage-entry{ display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px dashed var(--line); font-size:13px; }
+  .marriage-entry:last-child{ border-bottom:none; }
+  .marriage-entry .me-name{ font-weight:600; color:var(--spine); cursor:pointer; text-decoration:underline; text-underline-offset:2px; }
+  .marriage-entry .me-name:hover{ color:var(--wax); }
+  .marriage-entry .me-year{ color:rgba(33,40,31,.55); font-size:12px; margin-left:4px; }
+  .marriage-entry .me-remove{ all:unset; cursor:pointer; color:var(--wax); font-size:16px; margin-left:auto; opacity:.6; }
+  .marriage-entry .me-remove:hover{ opacity:1; }
+  /* Library manage panel */
+  .library-manage{ display:none; }
+  .library-manage-list{ display:none; }
+  .lib-item{ display:flex; align-items:center; justify-content:space-between; background:transparent; color:var(--ink); font-size:13px; padding:7px 10px; border-bottom:1px solid var(--line); }
+  .lib-item:last-child{ border-bottom:none; }
+  .lib-item:hover{ background:rgba(169,134,63,0.07); }
+  .lib-item button{ all:unset; cursor:pointer; font-size:16px; line-height:1; color:rgba(33,40,31,0.4); padding:0 2px; flex-shrink:0; }
+  .lib-item button:hover{ color:var(--wax); }
+
+  /* Relation action buttons row */
+  .relation-actions{ display:flex; gap:10px; margin-top:18px; padding-top:16px; border-top:1px solid var(--line); flex-wrap:wrap; }
+
+  /* ── Timeline (century-grid) view ── */
+  .century-block{ margin-bottom: 36px; }
+  .century-block:last-child{ margin-bottom: 0; }
+  .century-heading{ font-family: 'IM Fell English','Fraunces', serif; font-size: 30px; letter-spacing: 0.1em; color: var(--wax); font-weight: 600; text-transform: uppercase; text-align:center; padding-bottom: 8px; margin: 0 0 12px; border-bottom: 1px solid var(--line-strong); }
+  .year-row{ display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px; margin-bottom: 6px; }
+  .year-cell{ background: #fff; border: 1px solid var(--line); border-radius: 3px; padding: 8px 7px 7px; cursor: pointer; transition: border-color .14s ease, transform .14s ease; display: flex; flex-direction: column; gap: 4px; min-height: 72px; }
+  .year-cell:hover{ border-color: var(--gold); transform: translateY(-1px); }
+  .year-cell.current-year{ border: 2px solid var(--wax); padding: 7px 6px 6px; }
+  .year-cell.has-events{ background: var(--paper-light); }
+  .year-cell .yc-year{ font-family: 'Fraunces', serif; font-size: 13px; font-weight: 700; color: var(--spine); line-height: 1; }
+  .year-cell .yc-days{ font-size: 10px; color: rgba(33,40,31,0.45); line-height: 1; }
+  .year-cell .yc-icons{ display: flex; flex-wrap: wrap; gap: 3px; margin-top: auto; }
+  .year-cell .yc-icons img{ width: 13px; height: 13px; object-fit: contain; opacity: 0.82; }
+
+  @media (max-width: 1100px){ .year-row{ grid-template-columns: repeat(5, minmax(0,1fr)); } }
+  @media (max-width: 820px){
+    #app{ flex-direction:column; }
+    .spine{ width:100%; height:auto; position:relative; padding:16px 0; }
+    .spine-foot{ position:static; margin-top:10px; flex-direction:column; padding:10px 22px; }
+    main{ padding:26px 20px 50px; }
+    .offsets-grid{ grid-template-columns: repeat(2,1fr); }
+    .form-grid{ grid-template-columns: 1fr; }
+    .year-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+    .year-grid-large{ grid-template-columns:1fr; }
+    .calendar-view-row{ align-items:flex-start; }
+    .calendar-location-row{ justify-content:flex-start; flex-wrap:wrap; }
+    .calendar-location-row .calendar-location-title{ min-width:auto; }
+    .calendar-filters .spacer{ display:none; }
+    .calendar-search-input{ flex:1; min-width:180px; }
+    .decade-year-card{ min-height:190px; }
+    .day-hero-card{ max-width:100%; padding:24px; }
+    .rule-books{ grid-template-columns:1fr; }
+    .year-row{ grid-template-columns: repeat(5, minmax(0,1fr)); }
+  }
+  @media (max-width: 540px){ .year-row{ grid-template-columns: repeat(4, minmax(0,1fr)); } }
+
+  .crop-modal{ width:480px; }
+  .crop-canvas-wrap{ position:relative; width:100%; aspect-ratio:1/1; background-color:var(--paper-light, #F7F0DC) !important; overflow:hidden; border-radius:3px; cursor:grab; touch-action:none; }
+  .crop-canvas-wrap:active{ cursor:grabbing; }
+  .crop-canvas-wrap canvas{ display:block; width:100%; height:100%; }
+  .crop-overlay{ position:absolute; inset:0; box-shadow:0 0 0 9999px rgba(0,0,0,.45); pointer-events:none; }
+  .crop-controls{ display:flex; align-items:center; gap:12px; margin-top:14px; }
+  .crop-controls label{ font-size:12px; color:rgba(33,40,31,.6); white-space:nowrap; }
+  .crop-controls input[type=range]{ flex:1; accent-color:var(--spine); }
+  .parent-tal-wrap{ position:relative; }
+  .parent-tal-wrap .tal-option{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .parent-tal-wrap .tal-dropdown{ position:fixed; z-index:9999; max-height:200px; overflow-y:auto; overflow-x:hidden; min-width:0; box-sizing:border-box; }
+  .tal-dropdown{ max-height:200px; overflow-y:auto; }
+  .dice-widget-placeholder{ min-height:320px; display:flex; align-items:center; justify-content:center; border:2px dashed var(--line-strong); border-radius:4px; background:rgba(47,61,47,.03); }
+  .dice-placeholder-inner{ text-align:center; padding:40px; }
+  .dice-placeholder-icon{ font-size:64px; line-height:1; margin-bottom:16px; opacity:.35; }
+  .dice-placeholder-label{ font-family:'Fraunces',serif; font-size:22px; color:var(--spine); margin-bottom:8px; }
+  .dice-placeholder-sub{ font-size:13.5px; color:rgba(33,40,31,.5); font-style:italic; }
+
+  .sim-fields-list{ display:flex; flex-direction:column; gap:0; margin-bottom:4px; }
+  .sim-field{ display:grid; grid-template-columns:160px 1fr; align-items:baseline; padding:10px 0; border-bottom:1px solid var(--line); gap:16px; }
+  .sim-field:last-child{ border-bottom:none; }
+  .sim-field-full{ grid-column:1/-1; }
+  .sim-field-label{ font-size:11.5px; letter-spacing:0.05em; text-transform:uppercase; color:rgba(33,40,31,.48); font-weight:600; flex-shrink:0; padding-top:2px; }
+  .sim-field-value{ font-size:14.5px; color:var(--ink); line-height:1.5; }
+  .sim-field-input input, .sim-field-input select{ width:100%; padding:6px 8px; border:1px solid var(--line-strong); border-radius:3px; background:#fff; font-family:'Source Sans 3'; font-size:14px; }
+  .sim-field-input .tal-select-wrap{ width:100%; }
+  .sim-field-input .tal-select-input{ width:100%; }
+
+  /* Collapsible sim sections */
+  .sim-section-head.collapsible{ cursor:pointer; user-select:none; }
+  .sim-section-head.collapsible::after{ content:"▲"; font-size:9px; margin-left:auto; opacity:.5; transition:transform .2s ease; }
+  .sim-section-head.collapsible.collapsed::after{ transform:rotate(180deg); }
+  .sim-collapsible-body{ overflow:hidden; transition:max-height .25s ease, opacity .2s ease; max-height:2000px; opacity:1; }
+  .sim-collapsible-body.collapsed{ max-height:0; opacity:0; pointer-events:none; }
+
+  .rules-copy { position: relative; }
+  .jump-to { position: absolute; top: 20px; right: 20px; display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; }
+  .jump-to select { font-family: inherit; padding: 0.35rem 0.5rem; border-radius: 4px; background-color: var(--paper-light); color: #2f3028; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<input type="file" id="file-input" accept="application/json">
+
+<script>
+/* ---------------------------------------------------------
+   CENTRAL ICON CONFIGURATION
+--------------------------------------------------------- */
+const ICONS = {
+  births: 'born.png',
+  birthdays: 'bday.png',
+  deaths: 'death.png',
+  expiration: 'exp.png',
+  'historical-wars': 'sword.png',
+  'historical-outbreaks': 'ill.png',
+  'historical-famines': 'tummy.png',
+  'historical-others': 'scroll.png'
+};
+
+/* ---------------------------------------------------------
+   DATA MODEL
+--------------------------------------------------------- */
+const WEEKDAYS = ['TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY','MONDAY'];
+const STORAGE_KEY = 'bondChronicleData_v3';
+
+const DEFAULT_OFFSETS = { infant:1, toddler:7, child:24, teen:52, youngAdult:80, adult:120, elder:200 };
+const STAGE_SEQUENCE = ['infant','toddler','child','teen','youngAdult','adult','elder'];
+const STAGE_LABELS = { infant:'Becomes Infant', toddler:'Becomes Toddler', child:'Becomes Child',
+  teen:'Becomes Teen', youngAdult:'Becomes Young Adult', adult:'Becomes Adult', elder:'Becomes Elder' };
+
+function cryptoId(){ return 'id-' + Math.random().toString(36).slice(2,10); }
+
+function buildDefaultState(){
+  const cedricId = cryptoId();
+  const imogenId = cryptoId();
+  const rosalindId = cryptoId();
+  const thomasId = cryptoId();
+  const annabelId = cryptoId();
+  return {
+    currentDay: 23,
+    offsets: Object.assign({}, DEFAULT_OFFSETS),
+    notes: {},
+    historicalEvents: [],
+    libraries: { traits:[], aspirations:[], lifestyles:[], nationalities:[], families:[], lastNames:[] },
+    relationsMigrated: true,
+    sims: [
+      { id:cedricId, firstName:'Cedric', lastName:'Bond', generation:'P1st', parentIds:[], spouseId:imogenId,
+        sex:'M', birthDay:-79, yearBorn:1279, status:'Alive', yearOfDeath:'', causeOfDeath:'',
+        nationality:'English', family:'Bond Family P1st', yearMarried:1300, notes:'',
+        traits:[], aspirations:[], lifestyles:[], aspirationCompleted:{} },
+      { id:imogenId, firstName:'Imogen', lastName:'Bond', generation:'P1st', parentIds:[], spouseId:cedricId,
+        sex:'F', birthDay:-78, yearBorn:1280, status:'Alive', yearOfDeath:'', causeOfDeath:'',
+        nationality:'English', family:'', yearMarried:1300, notes:'',
+        traits:[], aspirations:[], lifestyles:[], aspirationCompleted:{} },
+      { id:rosalindId, firstName:'Rosalind', lastName:'Bond', generation:'P2nd', parentIds:[cedricId, imogenId], spouseId:'',
+        sex:'F', birthDay:7, yearBorn:1301, status:'Alive', yearOfDeath:'', causeOfDeath:'',
+        nationality:'English', family:'', yearMarried:'', notes:'',
+        traits:[], aspirations:[], lifestyles:[], aspirationCompleted:{} },
+      { id:thomasId, firstName:'Thomas', lastName:'Bond', generation:'P2nd', parentIds:[cedricId, imogenId], spouseId:'',
+        sex:'M', birthDay:14, yearBorn:1303, status:'Alive', yearOfDeath:'', causeOfDeath:'',
+        nationality:'English', family:'', yearMarried:'', notes:'',
+        traits:[], aspirations:[], lifestyles:[], aspirationCompleted:{} },
+      { id:annabelId, firstName:'Annabel', lastName:'Bond', generation:'P2nd', parentIds:[cedricId, imogenId], spouseId:'',
+        sex:'F', birthDay:14, yearBorn:1303, status:'Alive', yearOfDeath:'', causeOfDeath:'',
+        nationality:'English', family:'', yearMarried:'', notes:'',
+        traits:[], aspirations:[], lifestyles:[], aspirationCompleted:{} },
+    ]
+  };
+}
+
+let state = loadState();
+let view = 'timeline';
+let selectedDay = null;
+let rosterSearch = '';
+let rosterView = 'list';
+let rosterSortCol = 'birthDay';
+let rosterSortDir = 1;
+let calendarDecade = 1300;
+let calendarYear = 1300;
+let calendarSearch = '';
+let calendarMode = 'decade';
+let calendarCategory = ['all'];
+let calendarIncludePast = false;
+let editingSimId = null;
+let modal = null;
+let cropSimId = null;
+let listFilterCategory = null;
+let simEditMode = false;
+let calendarScrollHandler = null;
+let filterDropdownOpen = false;
+// pending new-sim data that was triggered from "add child" flow
+let pendingChildParentId = null;
+
+function migrateRelations(parsed){
+  if(parsed.relationsMigrated) return;
+  const byName = new Map(parsed.sims.map(s => [`${s.firstName} ${s.lastName}`.toLowerCase(), s]));
+  parsed.sims.forEach(sim => {
+    if(!Array.isArray(sim.parentIds)){
+      sim.parentIds = [];
+      const relation = sim.relation || '';
+      const match = relation.match(/(?:daughter|son|child)\s+of\s+(.+)/i);
+      if(match){
+        match[1].replace(/\s+bond\b/gi, ' Bond').split(/\s*(?:&|\band\b)\s*/i).forEach(name => {
+          const clean = name.trim().replace(/[.,]+$/, '').toLowerCase();
+          const parent = byName.get(clean);
+          if(parent) sim.parentIds.push(parent.id);
+        });
+      }
+    }
+    if(!sim.spouseId){
+      const relation = sim.relation || '';
+      const marriedMatch = relation.match(/married to\s+(.+)/i);
+      if(marriedMatch){
+        const clean = marriedMatch[1].trim().replace(/[.,]+$/, '').toLowerCase();
+        const spouse = byName.get(clean);
+        if(spouse) sim.spouseId = spouse.id;
+      }
+    }
+    sim.spouseId = sim.spouseId || '';
+  });
+  parsed.relationsMigrated = true;
+}
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      const parsed = JSON.parse(raw);
+      if(parsed && Array.isArray(parsed.sims)){
+        parsed.libraries = parsed.libraries || { traits:[], aspirations:[], lifestyles:[], nationalities:[], families:[], lastNames:[] };
+        parsed.historicalEvents = Array.isArray(parsed.historicalEvents) ? parsed.historicalEvents : [];
+        parsed.sims.forEach(sim => {
+          sim.traits = sim.traits || [];
+          sim.aspirations = sim.aspirations || [];
+          sim.lifestyles = sim.lifestyles || [];
+          sim.aspirationCompleted = sim.aspirationCompleted || {};
+        });
+        migrateRelations(parsed);
+        try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed)); }catch(e){}
+        return parsed;
+      }
+    }
+  }catch(e){}
+  return buildDefaultState();
+}
+
+function persist(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+  render();
+}
+
+function showToast(message){
+  const existing = document.getElementById('toast-note');
+  if(existing) existing.remove();
+  const el = document.createElement('div');
+  el.id = 'toast-note';
+  el.className = 'toast-note';
+  el.textContent = message;
+  document.body.appendChild(el);
+  (window.requestAnimationFrame || (cb => setTimeout(cb, 16)))(() => el.classList.add('show'));
+  setTimeout(() => {
+    el.classList.remove('show');
+    setTimeout(() => el.remove(), 300);
+  }, 2200);
+}
+
+/* ---------------------------------------------------------
+   GAME LOGIC
+--------------------------------------------------------- */
+function weekdayFor(day){
+  const idx = (((day - 1) % 7) + 7) % 7;
+  return WEEKDAYS[idx];
+}
+
+function yearForDay(day){ return 1300 + Math.floor((day - 1) / 4); }
+function firstDayOfYear(year){ return ((year - 1300) * 4) + 1; }
+function dayLabel(day){ return `Day ${day} · ${yearForDay(day)}`; }
+function goToDay(day){ selectedDay = day; view = 'calendar'; calendarMode = 'day'; }
+
+function stageFor(birthDay, currentDay, offsets){
+  const age = currentDay - birthDay;
+  if(age < 0) return 'Not yet born';
+  if(age < offsets.infant) return 'Baby';
+  if(age < offsets.toddler) return 'Infant';
+  if(age < offsets.child) return 'Toddler';
+  if(age < offsets.teen) return 'Child';
+  if(age < offsets.youngAdult) return 'Teen';
+  if(age < offsets.adult) return 'Young Adult';
+  if(age < offsets.elder) return 'Adult';
+  return 'Elder';
+}
+
+function ageDisplay(birthDay, currentDay){
+  const days = currentDay - birthDay;
+  if(days < 0) return '—';
+  const totalMonths = days * 3;
+  const years = Math.floor(totalMonths / 12);
+  const months = totalMonths % 12;
+  if(years === 0) return `${months} mo`;
+  if(months === 0) return `${years}y`;
+  return `${years}y ${months}mo`;
+}
+
+function getExpirationDay(sim, offsets){
+  return sim.birthDay + (offsets.elder || 200) + 30;
+}
+
+function nextTransition(sim, currentDay, offsets){
+  if(sim.status === 'Deceased') return null;
+  for(const key of STAGE_SEQUENCE){
+    const transitionDay = sim.birthDay + offsets[key];
+    if(transitionDay >= currentDay){
+      return { day: transitionDay, label: STAGE_LABELS[key], key, category: 'birthdays' };
+    }
+  }
+  return null;
+}
+
+function upcomingEvents(state){
+  const byDay = {};
+  state.sims.forEach(sim => {
+    STAGE_SEQUENCE.forEach(key => {
+      const day = sim.birthDay + state.offsets[key];
+      if(day >= state.currentDay){
+        if(!byDay[day]) byDay[day] = [];
+        byDay[day].push({ text: `${sim.firstName} ${sim.lastName} — ${STAGE_LABELS[key]}`, category: 'birthdays', iconUrl: ICONS.birthdays });
+      }
+    });
+    if(sim.status === 'Alive'){
+      const expDay = getExpirationDay(sim, state.offsets);
+      if(expDay >= state.currentDay){
+        if(!byDay[expDay]) byDay[expDay] = [];
+        byDay[expDay].push({ text: `${sim.firstName} ${sim.lastName} — Expiration Date`, category: 'expiration', iconUrl: ICONS.expiration });
+      }
+    }
+  });
+  (state.historicalEvents || []).forEach(ev => {
+    const startDay = Number(ev.startDay ?? ev.day);
+    const endDay = Number(ev.endDay ?? ev.day ?? startDay);
+    const sub = ev.subcat || 'others';
+    const catKey = `historical-${sub}`;
+    for(let day = startDay; day <= endDay; day++){
+      if(day >= state.currentDay){
+        if(!byDay[day]) byDay[day] = [];
+        byDay[day].push({ text: ev.text, category: catKey, iconUrl: ICONS[catKey] || ICONS['historical-others'], eventId: ev.id });
+      }
+    }
+  });
+  return Object.entries(byDay).map(([day, items]) => ({
+    day: Number(day), items, sub: weekdayFor(Number(day)),
+  })).sort((a,b) => a.day - b.day).slice(0, 8);
+}
+
+function allEventsByDay(state){
+  const map = {};
+  function add(day, text, category, iconUrl, simId){
+    if(day < 1) return;
+    if(!map[day]) map[day] = [];
+    map[day].push({ text, category, iconUrl, simId });
+  }
+  state.sims.forEach(sim => {
+    add(sim.birthDay, `${sim.firstName} ${sim.lastName} was born`, 'births', ICONS.births, sim.id);
+    if(sim.status === 'Deceased' && sim.yearOfDeath){
+      const deathYear = parseInt(sim.yearOfDeath, 10);
+      if(!isNaN(deathYear) && deathYear >= 1300){
+        add(firstDayOfYear(deathYear), `${sim.firstName} ${sim.lastName} died`, 'deaths', ICONS.deaths, sim.id);
+      }
+    }
+    STAGE_SEQUENCE.forEach(key => {
+      const day = sim.birthDay + state.offsets[key];
+      add(day, `${sim.firstName} ${sim.lastName} — ${STAGE_LABELS[key]}`, 'birthdays', ICONS.birthdays, sim.id);
+    });
+    if(sim.status === 'Alive'){
+      const expDay = getExpirationDay(sim, state.offsets);
+      add(expDay, `${sim.firstName} ${sim.lastName} — Expiration Date`, 'expiration', ICONS.expiration, sim.id);
+    }
+  });
+  (state.historicalEvents || []).forEach(event => {
+    const sub = event.subcat || 'others';
+    const catKey = `historical-${sub}`;
+    const startDay = Number(event.startDay ?? event.day);
+    const endDay = Number(event.endDay ?? event.day ?? startDay);
+    for(let day = startDay; day <= endDay; day++){
+      add(day, event.text, catKey, ICONS[catKey] || ICONS['historical-others'], null, event.id);
+    }
+  });
+  return map;
+}
+
+function eventMarkup(event){
+  const text = typeof event === 'string' ? event : event.text;
+  const eventId = typeof event === 'string' ? null : event.eventId;
+  let output = text;
+  state.sims.forEach(sim => {
+    const name = `${sim.firstName} ${sim.lastName}`;
+    output = output.replaceAll(name, `<a class="sim-link" data-sim-link="${sim.id}">${name}</a>`);
+  });
+  if(eventId){
+    output += ` <button class="event-delete-btn" data-delete-history="${eventId}" title="Delete event">×</button>`;
+  }
+  return output;
+}
+
+function familyTreeGenerations(sims){
+  const byId = new Map(sims.map(sim => [sim.id, sim]));
+  const depth = new Map();
+  const getDepth = (sim, trail = new Set()) => {
+    if(depth.has(sim.id)) return depth.get(sim.id);
+    if(trail.has(sim.id)) return 0;
+    const parents = (sim.parentIds || []).map(id => byId.get(id)).filter(Boolean);
+    const value = parents.length ? Math.max(...parents.map(parent => getDepth(parent, new Set([...trail, sim.id])))) + 1 : 0;
+    depth.set(sim.id, value);
+    return value;
+  };
+  sims.forEach(sim => getDepth(sim));
+  return [...depth.entries()].reduce((groups, [id, level]) => {
+    if(!groups[level]) groups[level] = [];
+    groups[level].push(sims.find(sim => sim.id === id));
+    return groups;
+  }, []).filter(Boolean);
+}
+
+function renderFamilyTree(sims){
+  const generations = familyTreeGenerations(sims);
+  if(!generations.length) return '<div class="calendar-empty">Add sims to begin the family tree.</div>';
+  const byId = new Map(sims.map(s => [s.id, s]));
+
+  function nodeHtml(sim){
+    const portrait = sim.photo
+      ? `<img class="tree-node-portrait" src="${sim.photo}" alt="${sim.firstName}">`
+      : `<div class="tree-node-portrait-empty">${sim.firstName[0]}${sim.lastName[0]}</div>`;
+    return `<div class="tree-node" data-sim="${sim.id}" title="Open ${sim.firstName} ${sim.lastName}">
+      ${portrait}
+      <div class="tree-node-body">
+        <div class="tree-node-name"><span class="status-dot ${sim.status==='Alive'?'alive':'deceased'}"></span>${sim.firstName} ${sim.lastName}</div>
+        <div class="tree-node-meta">${sim.generation || 'Family member'} · ${sim.yearBorn || yearForDay(sim.birthDay)}</div>
+      </div>
+    </div>`;
+  }
+
+  function genRow(generation, genIndex){
+    const placed = new Set();
+    const groups = [];
+    generation.forEach(sim => {
+      if(placed.has(sim.id)) return;
+      const spouse = sim.spouseId ? generation.find(s => s.id === sim.spouseId) : null;
+      if(spouse && !placed.has(spouse.id)){
+        groups.push({ type:'couple', ids:[sim.id, spouse.id] });
+        placed.add(sim.id); placed.add(spouse.id);
+      } else {
+        groups.push({ type:'lone', ids:[sim.id] });
+        placed.add(sim.id);
+      }
+    });
+    const allLater = generations.slice(genIndex + 1).flat();
+    groups.forEach(g => {
+      g.children = allLater.filter(child =>
+        (child.parentIds || []).some(pid => g.ids.includes(pid))
+      ).sort((a,b) => a.birthDay - b.birthDay);
+    });
+    return groups;
+  }
+
+  function unitHtml(group){
+    const pairHtml = group.type === 'couple'
+      ? `<div class="tree-pair">
+          ${nodeHtml(byId.get(group.ids[0]))}
+          <div class="tree-marriage-bar"></div>
+          ${nodeHtml(byId.get(group.ids[1]))}
+        </div>`
+      : nodeHtml(byId.get(group.ids[0]));
+    if(!group.children.length) return `<div class="tree-unit">${pairHtml}</div>`;
+    const stemH = 28;
+    const childrenHtml = group.children.map(child => `
+      <div class="tree-child-unit">
+        <div class="tree-child-drop"></div>
+        ${nodeHtml(child)}
+      </div>`).join('');
+    return `<div class="tree-unit">
+      ${pairHtml}
+      <div class="tree-drop-stem" style="height:${stemH}px"></div>
+      <div class="tree-child-bar-wrap">
+        <div class="tree-child-h-bar"></div>
+        <div class="tree-children-row">${childrenHtml}</div>
+      </div>
+    </div>`;
+  }
+
+  const isChild = new Set();
+  generations.forEach((gen, gi) => {
+    const groups = genRow(gen, gi);
+    groups.forEach(g => g.children.forEach(c => isChild.add(c.id)));
+  });
+
+  const rootGroups = [];
+  generations.forEach((gen, gi) => {
+    const groups = genRow(gen, gi);
+    groups.forEach(g => {
+      const anyIsRoot = g.ids.some(id => !isChild.has(id));
+      if(anyIsRoot) rootGroups.push({ group: g, genIndex: gi });
+    });
+  });
+
+  const genLabel = gi => gi === 0 ? 'Founding Generation' : `Generation ${gi + 1}`;
+  const rowsHtml = rootGroups.map(({ group, genIndex }) =>
+    `<div style="display:flex;flex-direction:column;align-items:center;">
+      <div class="tree-gen-header"><span class="tree-gen-label">${genLabel(genIndex)}</span></div>
+      <div style="height:16px;width:2px;background:var(--gold);opacity:.4;"></div>
+      ${unitHtml(group)}
+    </div>`
+  ).join('<div style="width:48px;"></div>');
+  return `<div class="family-tree"><div class="tree-gen-row">${rowsHtml}</div></div>`;
+}
+
+function computeRelationLines(sim, sims){
+  const byId = new Map(sims.map(s => [s.id, s]));
+  const lines = [];
+  const parents = (sim.parentIds || []).map(id => byId.get(id)).filter(Boolean);
+  if(parents.length){
+    const label = sim.sex === 'M' ? 'Son of' : sim.sex === 'F' ? 'Daughter of' : 'Child of';
+    lines.push(`${label} ${parents.map(p => `${p.firstName} ${p.lastName}`).join(' & ')}`);
+  }
+  if(sim.spouseId && byId.get(sim.spouseId)){
+    const spouse = byId.get(sim.spouseId);
+    lines.push(`Married to ${spouse.firstName} ${spouse.lastName}`);
+  }
+  if((sim.parentIds || []).length){
+    const siblings = sims.filter(other => other.id !== sim.id && (other.parentIds || []).some(id => sim.parentIds.includes(id)));
+    if(siblings.length){
+      const label = sim.sex === 'M' ? 'Brother of' : sim.sex === 'F' ? 'Sister of' : 'Sibling of';
+      lines.push(`${label} ${siblings.map(s => `${s.firstName} ${s.lastName}`).join(', ')}`);
+    }
+  }
+  const children = sims.filter(other => (other.parentIds || []).includes(sim.id));
+  if(children.length){
+    const label = sim.sex === 'M' ? 'Father of' : sim.sex === 'F' ? 'Mother of' : 'Parent of';
+    lines.push(`${label} ${children.map(c => `${c.firstName} ${c.lastName}`).join(', ')}`);
+  }
+  return lines;
+}
+
+function computeRelationRows(sim, sims){
+  // Returns structured rows for the relations table: { role, name, id, yearLabel }
+  const byId = new Map(sims.map(s => [s.id, s]));
+  const rows = [];
+
+  // Parents
+  (sim.parentIds || []).map(id => byId.get(id)).filter(Boolean).forEach(p => {
+    const role = p.sex === 'F' ? 'Mother' : p.sex === 'M' ? 'Father' : 'Parent';
+    const yearLabel = p.yearBorn ? `Born ${p.yearBorn}` : '';
+    rows.push({ role, roleOf: 'parent', name: `${p.firstName} ${p.lastName}`, id: p.id, yearLabel });
+  });
+
+  // Spouse(s)
+  if(sim.spouseId && byId.get(sim.spouseId)){
+    const sp = byId.get(sim.spouseId);
+    const yearLabel = sim.yearMarried ? `Married ${sim.yearMarried}` : '';
+    rows.push({ role: 'Spouse', roleOf: 'spouse', name: `${sp.firstName} ${sp.lastName}`, id: sp.id, yearLabel });
+  }
+
+  // Siblings
+  if((sim.parentIds || []).length){
+    sims.filter(other => other.id !== sim.id && (other.parentIds || []).some(id => (sim.parentIds || []).includes(id))).forEach(sib => {
+      const role = sib.sex === 'M' ? 'Brother' : sib.sex === 'F' ? 'Sister' : 'Sibling';
+      const yearLabel = sib.yearBorn ? `Born ${sib.yearBorn}` : '';
+      rows.push({ role, roleOf: 'sibling', name: `${sib.firstName} ${sib.lastName}`, id: sib.id, yearLabel });
+    });
+  }
+
+  // Children
+  sims.filter(other => (other.parentIds || []).includes(sim.id)).forEach(child => {
+    const role = child.sex === 'M' ? 'Son' : child.sex === 'F' ? 'Daughter' : 'Child';
+    const yearLabel = child.yearBorn ? `Born ${child.yearBorn}` : '';
+    rows.push({ role, roleOf: 'child', name: `${child.firstName} ${child.lastName}`, id: child.id, yearLabel });
+  });
+
+  return rows;
+}
+
+function sameParents(a, b){
+  const pa = (a.parentIds || []).slice().sort();
+  const pb = (b.parentIds || []).slice().sort();
+  if(!pa.length || pa.length !== pb.length) return false;
+  return pa.every((id, i) => id === pb[i]);
+}
+
+function twinLabel(sim){
+  const twins = state.sims.filter(other => other.id !== sim.id && other.birthDay === sim.birthDay && sameParents(other, sim));
+  return twins.length ? 'Twin' : '';
+}
+
+function simOptionsHtml(excludeId, selectedId){
+  const options = state.sims.filter(s => s.id !== excludeId).sort((a,b) => (a.firstName+a.lastName).localeCompare(b.firstName+b.lastName));
+  return `<option value="">—</option>` + options.map(s => `<option value="${s.id}" ${s.id===selectedId?'selected':''}>${s.firstName} ${s.lastName}</option>`).join('');
+}
+
+function addLibraryValue(sim, key, rawValue){
+  const value = (rawValue || '').trim();
+  if(!value) return;
+  if(!sim[key].includes(value)) sim[key].push(value);
+  const libraries = state.libraries || (state.libraries = { traits:[], aspirations:[], lifestyles:[] });
+  if(!libraries[key].includes(value)) libraries[key].push(value);
+  if(key === 'aspirations' && sim.aspirationCompleted[value] === undefined) sim.aspirationCompleted[value] = false;
+}
+
+function removeLibraryValue(sim, key, value){
+  sim[key] = sim[key].filter(v => v !== value);
+  if(key === 'aspirations') delete sim.aspirationCompleted[value];
+}
+
+/* ---------------------------------------------------------
+   RENDER: SHELL
+--------------------------------------------------------- */
+function render(){
+  const app = document.getElementById('app');
+  const prevMain = document.querySelector('main');
+  const prevModalEl = document.querySelector('.modal');
+  const mainScroll = prevMain ? prevMain.scrollTop : 0;
+  const modalScroll = prevModalEl ? prevModalEl.scrollTop : 0;
+  const active = document.activeElement;
+  const activeId = active && active.id ? active.id : null;
+  const selStart = active && typeof active.selectionStart === 'number' ? active.selectionStart : null;
+  const selEnd = active && typeof active.selectionEnd === 'number' ? active.selectionEnd : null;
+
+  app.innerHTML = `
+    <div class="spine">
+      <div class="spine-title">
+        <span class="eyebrow">Ultimate Decades Challenge</span>
+        <h1>The Bond Chronicle</h1>
+      </div>
+      <nav class="spine-nav">
+        <button data-view="timeline" class="${view==='timeline'?'active':''}">Home</button>
+        <button data-view="roster" class="${view==='roster'?'active':''}">Family Tree</button>
+        <button data-view="calendar" class="${view==='calendar'?'active':''}">Calendar</button>
+        <button data-view="rules" class="${view==='rules'?'active':''}">Rules</button>
+        <button data-view="journal" class="${view==='journal'?'active':''}">Journal</button>
+        <button data-view="dice" class="${view==='dice'?'active':''}">Roll The Dice</button>
+      </nav>
+      <div class="spine-foot">
+        <button id="export-btn">Download backup (.json)</button>
+        <button id="import-btn">Restore from backup</button>
+        <div class="autosave-note">Autosaves in this browser as you go.</div>
+      </div>
+    </div>
+    <main>${ view === 'timeline' ? renderTimeline() : view === 'calendar' ? renderCalendar() : view === 'sim' ? renderSimInfo() : view === 'rules' ? renderRules() : view === 'journal' ? renderJournal() : view === 'event-list' ? renderEventList() : view === 'historical-manager' ? renderHistoricalManager() : view === 'dice' ? renderDice() : renderRoster() }</main>
+    ${ editingSimId ? renderModal() : modal === 'sim-profile' ? renderSimProfileModal() : modal === 'date' ? renderDateModal() : modal === 'rule-book' ? renderRuleModal() : modal === 'add-history' ? renderAddHistoryModal() : modal === 'crop-photo' ? renderCropModal() : modal === 'add-marriage' ? renderAddMarriageModal() : modal === 'add-child' ? renderAddChildModal() : modal === 'add-parents' ? renderAddParentsModal() : '' }
+  `;
+  bindEvents();
+
+  const newMain = document.querySelector('main');
+  if(newMain) newMain.scrollTop = mainScroll;
+  const newModalEl = document.querySelector('.modal');
+  if(newModalEl) newModalEl.scrollTop = modalScroll;
+  if(activeId){
+    const el = document.getElementById(activeId);
+    if(el){
+      el.focus();
+      if(selStart != null && el.setSelectionRange){ try{ el.setSelectionRange(selStart, selEnd); }catch(e){} }
+    }
+  }
+}
+
+/* ---------------------------------------------------------
+   RENDER: TIMELINE
+--------------------------------------------------------- */
+function renderTimeline(){
+  const day = state.currentDay;
+  const dow = weekdayFor(day);
+  const events = upcomingEvents(state);
+  return `
+    <div class="page-head">
+      <h2>Home</h2>
+      <p>Keep an eye on today and the milestones waiting just ahead.</p>
+    </div>
+    <div class="card card-pad">
+      <div class="today-hero">
+        <div class="today-day-input">${day}</div>
+        <div class="today-meta">
+          <span class="weekday">${dow}</span>
+          <span class="year">${dayLabel(day)}</span>
+        </div>
+        <div class="day-controls">
+          <button class="btn green" data-action="day-plus">Advance to next day</button>
+          <button class="btn small" data-action="open-date">Change date</button>
+        </div>
+      </div>
+    </div>
+    <div class="card card-pad">
+      <div class="section-title">
+        <span>Upcoming events</span>
+        <button class="btn small" data-action="open-calendar">Open calendar</button>
+      </div>
+      <div class="line-art"></div>
+      ${events.length ? `
+        <ul class="upcoming-list">
+          ${events.map(e => `
+            <li data-upcoming-day="${e.day}" title="Open ${dayLabel(e.day)}">
+              <span class="u-day">Day ${e.day}</span>
+              <div>
+                ${e.items.map(item => `
+                  <div class="u-text">
+                    <button class="event-icon-btn" data-filter-cat="${item.category}" title="View all future events of this kind">
+                      <img src="${item.iconUrl}" alt="icon">
+                    </button>
+                    ${eventMarkup(item.text)}
+                  </div>
+                `).join('')}
+                <div class="u-sub">${e.sub} <span class="tag">in ${e.day - day}d</span></div>
+              </div>
+            </li>
+          `).join('')}
+        </ul>
+      ` : `<div class="empty-journal">Nothing scheduled yet. Add sims in Roster to create milestones.</div>`}
+    </div>
+  `;
+}
+function talSimField(label, inputId, libraryKey, currentValue, sim, state){
+  const library = state.libraries || {};
+  const libValues = library[libraryKey] || [];
+  const viewVal = currentValue || '—';
+  if(!sim._talSingleValues) sim._talSingleValues = {};
+  const optionsHtml = libValues.map(v =>
+    `<div class="tal-option${currentValue===v?' is-added':''}" data-tal-single-pick="${inputId}::${v}" style="display:flex;align-items:center;justify-content:space-between;width:100%;box-sizing:border-box;gap:8px;">
+      <span style="flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${v}</span>
+      <button type="button" class="tal-lib-remove" data-tal-lib-remove="${libraryKey}::${v}" title="Remove from suggestions" style="all:unset;cursor:pointer;font-size:14px;line-height:1;color:rgba(33,40,31,0.35);padding:0 4px;flex-shrink:0;" onmouseover="this.style.color='var(--wax)'" onmouseout="this.style.color='rgba(33,40,31,0.35)'">×</button>
+    </div>`
+  ).join('');
+  return `<div><label>${label}</label>${simEditMode ? `
+    <div class="tal-select-wrap">
+      <input class="tal-select-input" id="${inputId}" autocomplete="off" placeholder="Type to search or add…" value="${currentValue||''}">
+      <div class="tal-dropdown" id="tal-dropdown-${inputId}">
+        ${optionsHtml || '<div class="tal-empty">No saved entries yet — type and press Enter to add</div>'}
+        <div class="tal-create" id="tal-create-${inputId}" style="display:none;" data-tal-single-create="${inputId}" data-tal-single-lib="${libraryKey}"></div>
+      </div>
+    </div>` : `<div class="rules-copy">${viewVal}</div>`}</div>`;
+}
+/* ---------------------------------------------------------
+   RENDER: SIM INFO
+--------------------------------------------------------- */
+function renderSimInfo(){
+  const sim = state.sims.find(item => item.id === selectedSimId);
+  if(!sim) return '<div class="empty-journal">Sim not found.</div>';
+  const editMode = simEditMode;
+  const milestones = STAGE_SEQUENCE.map(key => ({ key, day: sim.birthDay + state.offsets[key], label: STAGE_LABELS[key] }));
+  const library = state.libraries || { traits:[], aspirations:[], lifestyles:[] };
+  const deceased = sim.status === 'Deceased';
+  const expDay = getExpirationDay(sim, state.offsets);
+  const relationRows = computeRelationRows(sim, state.sims);
+  const currentStage = stageFor(sim.birthDay, state.currentDay, state.offsets);
+  const statusBadgeClass = deceased ? 'sim-status-badge deceased' : 'sim-status-badge';
+
+  // Single-value field helper
+  const field = (label, viewValue, editHtml) => `
+    <div class="sim-field">
+      <label class="sim-field-label">${label}</label>
+      ${editMode ? `<div class="sim-field-input">${editHtml}</div>` : `<div class="sim-field-value">${viewValue || '—'}</div>`}
+    </div>`;
+
+  // Name field (plain input)
+  const nameField = (label, id, value) => `
+    <div class="sim-field">
+      <label class="sim-field-label">${label}</label>
+      ${editMode ? `<div class="sim-field-input"><input id="${id}" value="${value||''}"></div>` : `<div class="sim-field-value">${value || '—'}</div>`}
+    </div>`;
+
+  // TAL single field wrapper for the new layout
+  const talField = (label, inputId, libraryKey, currentValue) => {
+    const libValues = (state.libraries || {})[libraryKey] || [];
+    const optionsHtml = libValues.map(v =>
+      `<div class="tal-option${currentValue===v?' is-added':''}" data-tal-single-pick="${inputId}::${v}" style="display:flex;align-items:center;justify-content:space-between;width:100%;box-sizing:border-box;gap:8px;">
+        <span style="flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${v}</span>
+        <button type="button" class="tal-lib-remove" data-tal-lib-remove="${libraryKey}::${v}" title="Remove from suggestions" style="all:unset;cursor:pointer;font-size:14px;line-height:1;color:rgba(33,40,31,0.35);padding:0 4px;flex-shrink:0;" onmouseover="this.style.color='var(--wax)'" onmouseout="this.style.color='rgba(33,40,31,0.35)'">×</button>
+      </div>`
+    ).join('');
+    return `<div class="sim-field">
+      <label class="sim-field-label">${label}</label>
+      ${editMode ? `<div class="sim-field-input"><div class="tal-select-wrap">
+        <input class="tal-select-input" id="${inputId}" autocomplete="off" placeholder="Type to search or add…" value="${currentValue||''}">
+        <div class="tal-dropdown" id="tal-dropdown-${inputId}">
+          ${optionsHtml || '<div class="tal-empty">No saved entries yet — type and press Enter to add</div>'}
+          <div class="tal-create" id="tal-create-${inputId}" style="display:none;" data-tal-single-create="${inputId}" data-tal-single-lib="${libraryKey}"></div>
+        </div>
+      </div></div>` : `<div class="sim-field-value">${currentValue || '—'}</div>`}
+    </div>`;
+  };
+
+  // Tag field (multi-value: traits, aspirations, lifestyles)
+  const tagField = (label, key) => {
+    const values = sim[key] || [];
+    const libValues = (library[key] || []);
+    const chips = editMode
+      ? values.map(v => `<span class="tag-chip">${v}<button type="button" data-remove-tag="${key}::${v}">×</button></span>`).join('')
+      : (values.map(v => `<span class="tag-chip static">${v}</span>`).join('') || '<span class="empty-tag">—</span>');
+    const optionsHtml = libValues.map(v =>
+      `<div class="tal-option${values.includes(v)?' is-added':''}" data-tal-pick="${key}::${v}" style="display:flex !important;align-items:center !important;justify-content:space-between !important;width:100% !important;box-sizing:border-box !important;gap:8px !important;">
+        <span style="flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${v}${values.includes(v)?' <span style="opacity:.4;font-size:11px;">added</span>':''}</span>
+        <button type="button" class="tal-lib-remove" data-tal-lib-remove="${key}::${v}" title="Remove from suggestions" style="all:unset;cursor:pointer;font-size:14px;line-height:1;color:rgba(33,40,31,0.35);padding:0 4px;flex-shrink:0;" onmouseover="this.style.color='var(--wax)'" onmouseout="this.style.color='rgba(33,40,31,0.35)'">×</button>
+      </div>`
+    ).join('');
+    const inputRow = editMode ? `<div class="tal-select-wrap" style="margin-top:6px;">
+      <input class="tal-select-input" id="tag-input-${key}" autocomplete="off" placeholder="Type to search or add ${label.toLowerCase()}…">
+      <div class="tal-dropdown" id="tal-dropdown-${key}">
+        ${optionsHtml || '<div class="tal-empty">No saved suggestions yet — type and press Enter to add</div>'}
+        <div class="tal-create" id="tal-create-${key}" style="display:none;" data-tal-create="${key}"></div>
+      </div>
+    </div>` : '';
+    const aspirationChecks = key === 'aspirations' ? values.map((v, i) => `<label style="display:block;margin-top:6px;font-size:12.5px"><input type="checkbox" data-aspiration="${v}" ${sim.aspirationCompleted[v]?'checked':''}> ${values.length > 1 ? `Aspiration ${i + 1} completed` : 'Completed'}</label>`).join('') : '';
+    return `<div class="sim-field sim-field-full">
+      <label class="sim-field-label">${label}</label>
+      <div class="sim-field-value" style="display:block;"><div class="tag-row" style="margin-bottom:0;">${chips}</div>${inputRow}${aspirationChecks}</div>
+    </div>`;
+  };
+
+  // Relations card
+  const relationsSection = `
+    <div class="card card-pad">
+      <div class="section-title collapsible-trigger" data-collapse-target="family-ties-body" style="cursor:pointer;user-select:none;">
+        <span>Family ties</span>
+        <span class="collapse-arrow" style="font-size:9px;opacity:.5;transition:transform .2s ease;">▲</span>
+      </div>
+      <div class="sim-collapsible-body" id="family-ties-body">
+        ${relationRows.length ? `
+          <table class="relations-table">
+            <thead><tr><th>Relation</th><th>Name</th><th>Year</th></tr></thead>
+            <tbody>${relationRows.map(row => `
+              <tr>
+                <td>${row.role}</td>
+                <td class="rel-name-cell" data-sim-link="${row.id}">${row.name}</td>
+                <td>${row.yearLabel || '—'}</td>
+              </tr>`).join('')}
+            </tbody>
+          </table>
+        ` : `<div class="empty-journal" style="padding:12px 0;">No family relations recorded yet.</div>`}
+        <div class="relation-actions">
+          ${!(sim.parentIds && sim.parentIds.length) ? `<button class="btn small" data-action="open-add-parents">+ Add Parents</button>` : ''}
+          ${!sim.spouseId ? `<button class="btn small" data-action="open-add-marriage">+ Add Spouse</button>` : ''}
+          <button class="btn small" data-action="open-add-child">+ Add Child</button>
+        </div>
+      </div>
+    </div>`;
+
+  // Photo block — centered
+  const photoHtml = sim.photo
+    ? `<img class="sim-photo" src="${sim.photo}" alt="${sim.firstName} ${sim.lastName}" style="width:180px;height:180px;object-fit:cover;object-position:center top;border-radius:4px;border:2px solid var(--line-strong);display:block;">`
+    : `<div style="width:180px;height:180px;border-radius:4px;border:2px solid var(--line-strong);background:rgba(47,61,47,.06);display:flex;align-items:center;justify-content:center;font:32px 'Fraunces',serif;color:rgba(33,40,31,.3);">${sim.firstName[0]}${sim.lastName[0]}</div>`;
+
+  return `
+    <div class="card card-pad">
+
+      <!-- Edit / Save toolbar -->
+      <div style="display:flex;justify-content:flex-end;align-items:center;margin-bottom:20px;gap:8px;">
+        ${editMode
+          ? `<button class="btn green small" data-action="save-sim-info">Save</button><button class="btn small" data-action="cancel-sim-info">Cancel</button>`
+          : `<button class="btn small" data-action="edit-sim-info">Edit</button><button class="btn small" data-action="close-profile">Close</button>`}
+      </div>
+
+      <!-- Name — stacked and position-stable in view/edit -->
+      <div class="sim-profile-name-wrap">
+        ${editMode ? `
+          <div class="sim-profile-name-input">
+            <input id="sim-firstName" value="${sim.firstName}">
+            <div class="tal-select-wrap" style="width:min(100%,360px);position:relative;">
+              <input class="tal-select-input" id="sim-lastName" autocomplete="off" placeholder="Last name…" value="${sim.lastName||''}" style="width:100%;height:44px;box-sizing:border-box;text-align:center;font-family:'IM Fell English','Fraunces',serif;font-size:32px;color:rgba(33,40,31,.7);background:rgba(255,255,255,.72);border:1px solid var(--line-strong);border-radius:3px;padding:5px 10px;">
+              <div class="tal-dropdown" id="tal-dropdown-sim-lastName" style="z-index:9999;">
+                ${((state.libraries||{}).lastNames||[]).map(v =>
+                  `<div class="tal-option${sim.lastName===v?' is-added':''}" data-tal-single-pick="sim-lastName::${v}" style="display:flex;align-items:center;justify-content:space-between;width:100%;box-sizing:border-box;gap:8px;">
+                    <span style="flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${v}</span>
+                    <button type="button" class="tal-lib-remove" data-tal-lib-remove="lastNames::${v}" title="Remove from suggestions" style="all:unset;cursor:pointer;font-size:14px;line-height:1;color:rgba(33,40,31,0.35);padding:0 4px;flex-shrink:0;" onmouseover="this.style.color='var(--wax)'" onmouseout="this.style.color='rgba(33,40,31,0.35)'">×</button>
+                  </div>`
+                ).join('') || '<div class="tal-empty">No saved surnames — type and press Enter to add</div>'}
+                <div class="tal-create" id="tal-create-sim-lastName" style="display:none;" data-tal-single-create="sim-lastName" data-tal-single-lib="lastNames"></div>
+              </div>
+            </div>
+          </div>` : `
+          <div class="sim-profile-name">
+            <div>${sim.firstName}</div>
+            <div>${sim.lastName}</div>
+          </div>`}
+      </div>
+
+
+
+      <!-- Status badge + Record death — centered under name -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:22px;">
+        <span class="${statusBadgeClass}">${deceased ? '✝ Deceased' : '● Alive'}${deceased && sim.yearOfDeath ? ' · ' + sim.yearOfDeath : ''}</span>
+        ${!deceased && editMode ? `<button class="btn small red" data-action="prompt-kill-sim" style="font-size:11px;padding:4px 9px;">Record death</button>` : ''}
+      </div>
+
+      <!-- Photo — centered -->
+      <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:28px;gap:10px;">
+        ${photoHtml}
+        ${editMode ? `
+          <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+            <label class="text-link" style="cursor:pointer;">Upload photo<input id="sim-photo" type="file" accept="image/*" hidden></label>
+            ${sim.photo ? `<span class="text-link" data-action="crop-photo">Crop</span>` : ''}
+          </div>` : ''}
+      </div>
+
+      <!-- Identity section -->
+      <div class="sim-section-head">Identity</div>
+      <div class="sim-fields-list">
+        <div class="death-field" style="display:${deceased?'block':'none'}">${field('Year of death', sim.yearOfDeath, `<input id="sim-yearOfDeath" value="${sim.yearOfDeath||''}">`)}</div>
+        <div class="death-field" style="display:${deceased?'block':'none'}">${field('Cause of death', sim.causeOfDeath, `<input id="sim-causeOfDeath" value="${sim.causeOfDeath||''}">`)}</div>
+        ${field('Birth day', `Day ${sim.birthDay}, ${yearForDay(sim.birthDay)}`, `<input type="number" id="sim-birthDay" value="${sim.birthDay}" readonly style="background:rgba(33,40,31,.04);color:rgba(33,40,31,.5);cursor:not-allowed;">`)}
+        ${field('Age', ageDisplay(sim.birthDay, state.currentDay), `<input value="${ageDisplay(sim.birthDay, state.currentDay)}" readonly style="background:rgba(33,40,31,.04);color:rgba(33,40,31,.5);cursor:not-allowed;">`)}
+        ${field('Life stage', currentStage, `<input value="${currentStage}" readonly style="background:rgba(33,40,31,.04);color:rgba(33,40,31,.5);cursor:not-allowed;">`)}
+        ${field('Generation', sim.generation, `<input id="sim-generation" value="${sim.generation||''}">`)}
+        <div class="sim-field">
+          <label class="sim-field-label">Sex</label>
+          <div class="sim-field-value">${sim.sex === 'M' ? 'Male' : sim.sex === 'F' ? 'Female' : '—'}</div>
+        </div>
+        ${field('Nationality', sim.nationality || '—', `<input value="${sim.nationality || '—'}" readonly style="background:rgba(33,40,31,.04);color:rgba(33,40,31,.5);cursor:not-allowed;">`)}
+        ${talField('Household', 'sim-family', 'families', sim.family)}
+      </div>
+
+      <!-- Character section -->
+      <div class="sim-section-head">Character</div>
+      <div class="sim-fields-list">
+        ${tagField('Traits', 'traits')}
+        ${tagField('Aspirations', 'aspirations')}
+        ${tagField('Lifestyles', 'lifestyles')}
+      </div>
+
+      <!-- Notes section -->
+      <div class="sim-section-head">Notes</div>
+      <div style="margin-top:0;">
+        ${editMode
+          ? `<textarea id="sim-notes" class="notes-textarea" placeholder="Add notes about this sim…">${sim.notes||''}</textarea>`
+          : `<div style="font-family:'Source Serif 4',serif;font-size:14px;line-height:1.7;color:var(--ink);">${sim.notes || '<span style="color:rgba(33,40,31,.38);font-style:italic;">Nothing recorded yet.</span>'}</div>`}
+      </div>
+
+    </div>
+
+    ${relationsSection}
+
+    <div class="card card-pad">
+      <div class="section-title collapsible-trigger" data-collapse-target="life-progression-body" style="cursor:pointer;user-select:none;">
+        <span>Life progression</span>
+        <span class="collapse-arrow" style="font-size:9px;opacity:.5;transition:transform .2s ease;">▲</span>
+      </div>
+      <div class="sim-collapsible-body" id="life-progression-body">
+        <table class="milestone-table">
+          <thead><tr><th>Milestone</th><th>Date</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Born</strong></td><td><a class="milestone-day-link" data-day-link="${sim.birthDay}">${dayLabel(sim.birthDay)}</a></td></tr>
+            ${milestones.map(item=>`<tr><td>${item.label}</td><td><a class="milestone-day-link" data-day-link="${item.day}">${dayLabel(item.day)}</a></td></tr>`).join('')}
+            <tr><td>Expiration Date</td><td><a class="milestone-day-link" data-day-link="${expDay}">${dayLabel(expDay)}</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card card-pad" style="border-top:2px dashed rgba(122,46,46,0.25);">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <p style="margin:0;font-size:12.5px;color:rgba(33,40,31,.5);font-style:italic;">Permanently remove this sim and all associated data.</p>
+        <div id="delete-confirm-row">
+          <button class="btn small red" id="sim-delete-btn" data-action="prompt-delete-sim">Delete sim</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+document.addEventListener('input', (e) => {
+  if (!e.target.classList.contains('tal-select-input')) return;
+  if (e.target.id.indexOf('parent') !== -1) return;
+  
+  const input = e.target;
+  const key = input.id.replace('tag-input-', '');
+  const dropdown = document.getElementById(`tal-dropdown-${key}`);
+  if (!dropdown) return;
+
+  const query = input.value.toLowerCase().trim();
+  const options = dropdown.querySelectorAll('.tal-option');
+
+  options.forEach(opt => {
+    // Extract the text of the option cleanly
+    const textSpan = opt.querySelector('span');
+    const text = textSpan ? textSpan.textContent.replace('added', '').trim().toLowerCase() : '';
+    
+    // STRICTLY matches if the item starts with what you typed
+    if (text.startsWith(query)) {
+      opt.style.display = 'flex';
+    } else {
+      opt.style.display = 'none';
+    }
+  });
+});
+/* ---------------------------------------------------------
+   ELIGIBILITY HELPERS
+--------------------------------------------------------- */
+function getIneligibleSpouses(sim) {
+  const byId = new Map(state.sims.map(s => [s.id, s]));
+  const excluded = new Set();
+  excluded.add(sim.id);
+
+  // Anyone already married
+  state.sims.forEach(s => { if(s.spouseId && s.id !== sim.id) excluded.add(s.id); });
+
+  // Parents
+  (sim.parentIds || []).forEach(id => excluded.add(id));
+
+  // Children
+  state.sims.filter(s => (s.parentIds || []).includes(sim.id)).forEach(s => excluded.add(s.id));
+
+  // Siblings (share at least one parent)
+  if((sim.parentIds || []).length) {
+    state.sims.filter(s => s.id !== sim.id && (s.parentIds || []).some(pid => (sim.parentIds || []).includes(pid))).forEach(s => excluded.add(s.id));
+  }
+
+  // Grandparents
+  (sim.parentIds || []).forEach(pid => {
+    const parent = byId.get(pid);
+    if(parent) (parent.parentIds || []).forEach(gpid => excluded.add(gpid));
+  });
+
+  // Grandchildren
+  state.sims.filter(s => (s.parentIds || []).includes(sim.id)).forEach(child => {
+    state.sims.filter(s => (s.parentIds || []).includes(child.id)).forEach(gc => excluded.add(gc.id));
+  });
+
+  // Aunts/uncles (siblings of parents)
+  (sim.parentIds || []).forEach(pid => {
+    const parent = byId.get(pid);
+    if(parent && (parent.parentIds || []).length) {
+      state.sims.filter(s => s.id !== pid && (s.parentIds || []).some(gpid => (parent.parentIds || []).includes(gpid))).forEach(s => excluded.add(s.id));
+    }
+  });
+
+  // Nieces/nephews (children of siblings)
+  if((sim.parentIds || []).length) {
+    state.sims.filter(s => s.id !== sim.id && (s.parentIds || []).some(pid => (sim.parentIds || []).includes(pid))).forEach(sib => {
+      state.sims.filter(s => (s.parentIds || []).includes(sib.id)).forEach(s => excluded.add(s.id));
+    });
+  }
+
+  return excluded;
+}
+
+function getIneligibleChildren(sim) {
+  const byId = new Map(state.sims.map(s => [s.id, s]));
+  const excluded = new Set();
+  excluded.add(sim.id);
+
+  // Parents of sim (can't be their own grandparent's child)
+  (sim.parentIds || []).forEach(id => excluded.add(id));
+
+  // Spouse
+  if(sim.spouseId) excluded.add(sim.spouseId);
+
+  // Siblings
+  if((sim.parentIds || []).length) {
+    state.sims.filter(s => s.id !== sim.id && (s.parentIds || []).some(pid => (sim.parentIds || []).includes(pid))).forEach(s => excluded.add(s.id));
+  }
+
+  // Grandparents
+  (sim.parentIds || []).forEach(pid => {
+    const parent = byId.get(pid);
+    if(parent) (parent.parentIds || []).forEach(gpid => excluded.add(gpid));
+  });
+
+  // Aunts/uncles
+  (sim.parentIds || []).forEach(pid => {
+    const parent = byId.get(pid);
+    if(parent && (parent.parentIds || []).length) {
+      state.sims.filter(s => s.id !== pid && (s.parentIds || []).some(gpid => (parent.parentIds || []).includes(gpid))).forEach(s => excluded.add(s.id));
+    }
+  });
+
+  // Already-linked children (no duplicates)
+  state.sims.filter(s => (s.parentIds || []).includes(sim.id)).forEach(s => excluded.add(s.id));
+
+  return excluded;
+}
+
+function getIneligibleParents(sim) {
+  const excluded = new Set();
+  excluded.add(sim.id);
+
+  // Already-assigned parents
+  (sim.parentIds || []).forEach(id => excluded.add(id));
+
+  // Sim's own children
+  state.sims.filter(s => (s.parentIds || []).includes(sim.id)).forEach(s => excluded.add(s.id));
+
+  // Spouse
+  if(sim.spouseId) excluded.add(sim.spouseId);
+
+  // Siblings
+  if((sim.parentIds || []).length) {
+    state.sims.filter(s => s.id !== sim.id && (s.parentIds || []).some(pid => (sim.parentIds || []).includes(pid))).forEach(s => excluded.add(s.id));
+  }
+
+  return excluded;
+}
+
+/* ---------------------------------------------------------
+   MODALS: Add Marriage, Add Child
+--------------------------------------------------------- */
+function renderAddMarriageModal(){
+  const sim = state.sims.find(s => s.id === selectedSimId);
+  if(!sim) return '';
+  const excluded = getIneligibleSpouses(sim);
+  // Keep current spouse selectable if already set
+  const options = state.sims
+    .filter(s => !excluded.has(s.id) || s.id === sim.spouseId)
+    .sort((a,b) => (a.firstName+a.lastName).localeCompare(b.firstName+b.lastName));
+  const current = sim.spouseId ? state.sims.find(s => s.id === sim.spouseId) : null;
+  const optionsHtml = options.map(s =>
+    `<div class="tal-option" data-parent-pick="marriage-spouse::${s.id}" data-parent-name="${s.firstName} ${s.lastName}">${s.firstName} ${s.lastName}</div>`
+  ).join('') || '<div class="tal-empty">No eligible sims available</div>';
+  return `<div class="modal-overlay" id="modal-overlay"><div class="modal"><div class="modal-pad">
+    <h3>Add marriage — ${sim.firstName} ${sim.lastName}</h3>
+    <div class="form-grid">
+      <div class="full"><label>Spouse</label>
+        <div class="parent-tal-wrap">
+          <input class="tal-select-input" id="marriage-spouse" autocomplete="off" placeholder="Search by name…" value="${current ? current.firstName+' '+current.lastName : ''}">
+          <input type="hidden" id="marriage-spouse-id" value="${sim.spouseId||''}">
+          <div class="tal-dropdown" id="tal-dropdown-marriage-spouse">
+            ${optionsHtml}
+            <div class="tal-option" data-parent-pick="marriage-spouse::" data-parent-name="" style="color:rgba(33,40,31,.45);font-style:italic;">— clear —</div>
+          </div>
+        </div>
+      </div>
+      <div class="full"><label>Year married</label>
+        <input id="marriage-year" type="number" value="${sim.yearMarried || yearForDay(state.currentDay)}" placeholder="e.g. 1305">
+      </div>
+    </div>
+    <div class="modal-actions"><div></div><div class="right">
+      <button class="btn" data-action="close-modal">Cancel</button>
+      <button class="btn green" data-action="save-marriage">Save marriage</button>
+    </div></div>
+  </div></div></div>`;
+}
+
+function renderAddChildModal(){
+  const sim = state.sims.find(s => s.id === selectedSimId);
+  if(!sim) return '';
+  const excluded = getIneligibleChildren(sim);
+  const options = state.sims
+    .filter(s => !excluded.has(s.id))
+    .sort((a,b) => (a.firstName+a.lastName).localeCompare(b.firstName+b.lastName));
+  const optionsHtml = options.map(s =>
+    `<div class="tal-option" data-parent-pick="child-existing::${s.id}" data-parent-name="${s.firstName} ${s.lastName}">${s.firstName} ${s.lastName}</div>`
+  ).join('') || '<div class="tal-empty">No eligible sims available</div>';
+  return `<div class="modal-overlay" id="modal-overlay"><div class="modal"><div class="modal-pad">
+    <h3>Add a child to ${sim.firstName} ${sim.lastName}</h3>
+    <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:22px;">
+      <div style="border:1px solid var(--line);border-radius:4px;padding:18px 20px;background:#fff;">
+        <div style="font-family:'Fraunces',serif;font-size:15px;font-weight:600;color:var(--spine);margin-bottom:6px;">Link an existing sim</div>
+        <p style="font-size:13px;color:rgba(33,40,31,.6);margin:0 0 12px;line-height:1.5;">Choose a sim who already exists in the family tree to mark as ${sim.firstName}'s child.</p>
+        <label style="font-size:12px;color:rgba(33,40,31,.6);display:block;margin-bottom:5px;">Select sim</label>
+        <div class="parent-tal-wrap">
+          <input class="tal-select-input" id="child-existing" autocomplete="off" placeholder="Search by name…" value="">
+          <input type="hidden" id="child-existing-id" value="">
+          <div class="tal-dropdown" id="tal-dropdown-child-existing">
+            ${optionsHtml}
+          </div>
+        </div>
+        <div style="margin-top:12px;text-align:right;">
+          <button class="btn green small" data-action="save-child-existing">Link sim as child</button>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;"><div style="flex:1;height:1px;background:var(--line);"></div><span style="font-size:12px;color:rgba(33,40,31,.4);white-space:nowrap;">or</span><div style="flex:1;height:1px;background:var(--line);"></div></div>
+      <div style="border:1px solid var(--line);border-radius:4px;padding:18px 20px;background:#fff;">
+        <div style="font-family:'Fraunces',serif;font-size:15px;font-weight:600;color:var(--spine);margin-bottom:6px;">Create a new sim</div>
+        <p style="font-size:13px;color:rgba(33,40,31,.6);margin:0 0 12px;line-height:1.5;">Open the sim creator — ${sim.firstName} will be set as a parent automatically.</p>
+        <button class="btn small" data-action="add-child-new-sim" style="width:100%;text-align:center;">+ Create new sim as child</button>
+      </div>
+    </div>
+    <div style="text-align:right;"><button class="btn small" data-action="close-modal">Cancel</button></div>
+  </div></div></div>`;
+}
+
+function renderAddParentsModal(){
+  const sim = state.sims.find(s => s.id === selectedSimId);
+  if(!sim) return '';
+  const excluded = getIneligibleParents(sim);
+  const filteredParentSearchField = (label, inputId, currentId) => {
+    const selected = state.sims.find(s => s.id === currentId);
+    const displayVal = selected ? `${selected.firstName} ${selected.lastName}` : '';
+    const options = state.sims
+      .filter(s => !excluded.has(s.id) || s.id === currentId)
+      .sort((a,b) => (a.firstName+a.lastName).localeCompare(b.firstName+b.lastName));
+    const optionsHtml = options.map(s =>
+      `<div class="tal-option" data-parent-pick="${inputId}::${s.id}" data-parent-name="${s.firstName} ${s.lastName}">${s.firstName} ${s.lastName}</div>`
+    ).join('') || '<div class="tal-empty">No eligible sims available</div>';
+    return `<div>
+      <label>${label}</label>
+      <div class="parent-tal-wrap">
+        <input class="tal-select-input" id="${inputId}" autocomplete="off" placeholder="Search by name…" value="${displayVal}">
+        <input type="hidden" id="${inputId}-id" value="${currentId || ''}">
+        <div class="tal-dropdown" id="tal-dropdown-${inputId}">
+          ${optionsHtml}
+          <div class="tal-option" data-parent-pick="${inputId}::" data-parent-name="" style="color:rgba(33,40,31,.45);font-style:italic;">— clear —</div>
+        </div>
+      </div>
+    </div>`;
+  };
+  return `<div class="modal-overlay" id="modal-overlay"><div class="modal"><div class="modal-pad">
+    <h3>Add ${sim.firstName} ${sim.lastName}'s Parents</h3>
+    <div class="form-grid">
+      <div class="full">${filteredParentSearchField('Mother', 'add-parent1', (sim.parentIds||[])[0])}</div>
+      <div class="full">${filteredParentSearchField('Father', 'add-parent2', (sim.parentIds||[])[1])}</div>
+    </div>
+    <div class="modal-actions"><div></div><div class="right">
+      <button class="btn" data-action="close-modal">Cancel</button>
+      <button class="btn green" data-action="save-parents">Save parents</button>
+    </div></div>
+  </div></div></div>`;
+}
+
+function renderCropModal(){
+  return `<div class="modal-overlay" id="modal-overlay">
+    <div class="modal crop-modal">
+      <div class="modal-pad">
+        <h3>Crop photo</h3>
+        <div class="crop-canvas-wrap" id="crop-wrap">
+          <canvas id="crop-canvas"></canvas>
+          <div class="crop-overlay"><div class="crop-box"></div></div>
+        </div>
+        <div class="crop-controls">
+          <label>Zoom</label>
+          <input type="range" id="crop-zoom" min="0.5" max="4" step="0.01" value="1">
+        </div>
+        <p style="font-size:12px;color:rgba(33,40,31,.5);margin:8px 0 0;text-align:center;">Drag to draw a crop box. Click & drag inside to move it. Grab the corners to resize.</p>
+        <div class="modal-actions">
+          <div></div>
+          <div class="right">
+            <button class="btn" data-action="close-crop">Cancel</button>
+            <button class="btn green" data-action="save-crop">Apply crop</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderSimProfileModal(){
+  const sim = state.sims.find(s => s.id === selectedSimId);
+  const name = sim ? `${sim.firstName} ${sim.lastName}` : 'Sim Profile';
+  return `<div class="modal-overlay" id="modal-overlay"><div class="modal sim-profile-modal"><div class="modal-pad"><div style="padding:4px 0 18px;text-align:center;"><span style="font-family:'IM Fell English','Fraunces',serif;font-size:26px;font-weight:400;letter-spacing:0.02em;color:rgba(33,40,31,1);">Liber de Simulatiolandia</span></div>${renderSimInfo()}</div></div></div>`;
+}
+
+/* ---------------------------------------------------------
+   RENDER: CALENDAR
+--------------------------------------------------------- */
+function renderCalendar(){
+  const events = allEventsByDay(state);
+  const query = calendarSearch.trim().toLowerCase();
+  const catAll = calendarCategory.includes('all');
+  const hasActiveFilter = !catAll;
+  const showPast = (query || hasActiveFilter) ? calendarIncludePast : false;
+  const filteredEvents = day => {
+    if(!showPast && day < state.currentDay) return [];
+    return (events[day] || []).filter(event => catAll || calendarCategory.includes(event.category));
+  };
+  const yearDays = year => {
+    const start = firstDayOfYear(year);
+    return Array.from({length:4}, (_, index) => start + index);
+  };
+  const locationTitle = calendarMode === 'day'
+    ? dayLabel(selectedDay || state.currentDay)
+    : calendarMode === 'year'
+      ? String(calendarYear)
+      : calendarMode === 'decade'
+        ? `${calendarDecade}–${calendarDecade + 9}`
+        : '1300–2030';
+  const isAtToday = calendarMode === 'day' && (selectedDay || state.currentDay) === state.currentDay;
+  const todayButtonHtml = `<button class="btn small today-btn" data-action="calendar-today"${isAtToday ? ' style="visibility:hidden;pointer-events:none;"' : ''}>Today</button>`;
+  const locationControls = calendarMode === 'day'
+    ? `<div class="calendar-location-controls"><button class="btn small" data-action="calendar-day-prev">← Previous day</button><div class="calendar-location-title">${locationTitle}</div><button class="btn small" data-action="calendar-day-next">Next day →</button></div>`
+    : calendarMode === 'year'
+      ? `<div class="calendar-location-controls"><button class="btn small" data-action="calendar-year-prev" ${calendarYear <= 1300 ? 'disabled' : ''}>← Previous year</button><div class="calendar-location-title">${locationTitle}</div><button class="btn small" data-action="calendar-year-next">Next year →</button></div>`
+      : calendarMode === 'decade'
+        ? `<div class="calendar-location-controls"><button class="btn small" data-action="calendar-prev" ${calendarDecade <= 1300 ? 'disabled' : ''}>← Previous decade</button><div class="calendar-location-title">${locationTitle}</div><button class="btn small" data-action="calendar-next">Next decade →</button></div>`
+        : `<div class="calendar-location-controls"><button class="btn small" style="visibility:hidden" aria-hidden="true">← Previous</button><div class="calendar-location-title">${locationTitle}</div><button class="btn small" style="visibility:hidden" aria-hidden="true">Next →</button></div>`;
+
+  const pageHead = `<div class="page-head"><span class="eyebrow">The whole record</span><h2>Calendar</h2><p>Browse every day and event, filter by category, or search by name.</p></div>`;
+  const calendarHeader = `
+    <div class="card card-pad calendar-header-card">
+      <div class="calendar-view-row">
+        <div class="calendar-view-group">
+          <span class="calendar-view-label">View</span>
+          <div class="calendar-modes">
+            <button class="btn small ${calendarMode==='day'?'selected':''}" data-action="calendar-day-mode">Day</button>
+            <button class="btn small ${calendarMode==='year'?'selected':''}" data-action="calendar-year">Year</button>
+            <button class="btn small ${calendarMode==='decade'?'selected':''}" data-action="calendar-decade-mode">Decade</button>
+            <button class="btn small ${calendarMode==='all'?'selected':''}" data-action="calendar-all-mode">Timeline</button>
+          </div>
+        </div>
+      </div>
+      <div class="calendar-location-row">
+        <div class="today-btn-wrap">${todayButtonHtml}</div>
+        ${locationControls}
+        <div class="today-btn-spacer"></div>
+      </div>
+            ${ calendarMode !== 'day' ? `<div class="calendar-filters">
+        <div class="filter-dropdown" id="filter-dropdown">
+          <button class="filter-dropdown-btn" id="filter-dropdown-btn" type="button">
+            <span id="filter-dropdown-label">${calendarCategory.includes('all') || calendarCategory.length===0 ? 'All Events' : calendarCategory.length===1 ? ({'birthdays':'Birthdays','births':'Births','deaths':'Deaths','expiration':'Expiration Dates','historical-wars':'Wars','historical-outbreaks':'Outbreaks','historical-famines':'Famines','historical-others':'Other'}[calendarCategory[0]]||calendarCategory[0]) : calendarCategory.length + ' filters active'}</span>
+            <span class="fd-arrow">▼</span>
+          </button>
+          <div class="filter-dropdown-panel" id="filter-dropdown-panel">
+            <label class="filter-dropdown-item all-item"><input type="checkbox" data-filter-val="all" ${calendarCategory.includes('all')?'checked':''}> All Events</label>
+            <label class="filter-dropdown-item"><input type="checkbox" data-filter-val="birthdays" ${catAll||calendarCategory.includes('birthdays')?'checked':''}> Birthdays</label>
+            <label class="filter-dropdown-item"><input type="checkbox" data-filter-val="births" ${catAll||calendarCategory.includes('births')?'checked':''}> Births</label>
+            <label class="filter-dropdown-item"><input type="checkbox" data-filter-val="deaths" ${catAll||calendarCategory.includes('deaths')?'checked':''}> Deaths</label>
+            <label class="filter-dropdown-item"><input type="checkbox" data-filter-val="expiration" ${catAll||calendarCategory.includes('expiration')?'checked':''}> Expiration Dates</label>
+            <label class="filter-dropdown-item"><input type="checkbox" data-filter-val="historical-wars" ${catAll||calendarCategory.includes('historical-wars')?'checked':''}> Wars</label>
+            <label class="filter-dropdown-item"><input type="checkbox" data-filter-val="historical-outbreaks" ${catAll||calendarCategory.includes('historical-outbreaks')?'checked':''}> Outbreaks</label>
+            <label class="filter-dropdown-item"><input type="checkbox" data-filter-val="historical-famines" ${catAll||calendarCategory.includes('historical-famines')?'checked':''}> Famines</label>
+            <label class="filter-dropdown-item"><input type="checkbox" data-filter-val="historical-others" ${catAll||calendarCategory.includes('historical-others')?'checked':''}> Other</label>
+          </div>
+        </div>
+        <input type="search" id="calendar-search" class="calendar-search-input" placeholder="Search events or names…" value="${calendarSearch}">
+        ${(query || !catAll) ? `<label style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:rgba(33,40,31,.65);cursor:pointer;white-space:nowrap;"><input type="checkbox" id="include-past-check" ${calendarIncludePast ? 'checked' : ''} style="accent-color:var(--spine);cursor:pointer;"> Include past events</label>` : ''}
+        ${(calendarMode === 'decade' || calendarMode === 'all') ? `<input type="number" id="jump-to-year" class="calendar-search-input" placeholder="Jump to year…" style="width:130px" min="1300" max="2030">` : ''}
+        <span class="spacer"></span>
+                <button class="btn small" data-action="open-add-history">+ Add Event</button>
+      </div>` : `
+      <div class="calendar-filters" style="justify-content:flex-end"><button class="btn small" data-action="open-add-history">+ Add Event</button></div>` }
+      
+    </div>
+  `;
+  const contentStart = `<div class="card card-pad calendar-content-card">`;
+  const contentEnd = `</div><button class="btn small calendar-scroll-top" data-action="calendar-scroll-top" aria-label="Scroll to top">↑ Top</button>`;
+
+  if(calendarMode === 'day'){
+    const day = selectedDay || state.currentDay;
+    const dayEvents = filteredEvents(day);
+    const note = state.notes[day] || '';
+    return `${pageHead}${calendarHeader}${contentStart}
+        <div class="day-hero-wrap">
+          <div class="day-hero-card ${day===state.currentDay?'current':''}">
+            <span class="day-label">${dayLabel(day)}</span>
+            <span class="day-week">${weekdayFor(day)}</span>
+            ${dayEvents.length ? `<ul class="day-view-events">${dayEvents.map(event => `<li><button class="event-icon-btn" data-filter-cat="${event.category}"><img src="${event.iconUrl}" alt="icon"></button>${eventMarkup(event)}</li>`).join('')}</ul>` : `<div class="calendar-empty" style="margin-top:8px;">No scheduled events</div>`}
+          </div>
+        </div>
+      ${contentEnd}
+      <div class="card card-pad">
+        <div class="section-title"><span>Journal entry</span><button class="btn small" data-action="day-journal">${note ? 'Edit entry' : 'Add journal entry'}</button></div>
+        ${note ? `<p class="rules-copy">${note}</p>` : '<div class="empty-journal">No journal entry for this day yet.</div>'}
+      </div>`;
+  }
+
+    if(calendarMode === 'year'){
+    const days = yearDays(calendarYear);
+    const hasActiveSearch = query || !catAll;
+    return `${pageHead}${calendarHeader}${contentStart}
+        <div class="year-grid-large">${days.map(day => {
+          const evs = filteredEvents(day);
+          if(hasActiveSearch && !evs.length) return '';
+          return `<div class="year-day-large ${day===state.currentDay?'current':''}" data-calendar-day="${day}">
+            <span class="day-label">Day ${day}</span><span class="day-week">${weekdayFor(day)}</span>
+            ${evs.length ? evs.map(event => `<div class="event-line"><button class="event-icon-btn" data-filter-cat="${event.category}"><img src="${event.iconUrl}" alt="icon"></button>${eventMarkup(event)}</div>`).join('') : `<div class="calendar-empty" style="margin-top:8px;font-size:12px;">No scheduled events</div>`}
+          </div>`;
+        }).join('') || '<div class="calendar-empty">No days match that filter.</div>'}</div>
+      ${contentEnd}`;
+  }
+
+  if(calendarMode === 'decade'){
+    const years = Array.from({length:10}, (_, index) => calendarDecade + index);
+    const visibleYears = years.filter(year => {
+      const days = yearDays(year);
+      const yearEvents = days.flatMap(day => filteredEvents(day));
+      if(!query) return catAll || yearEvents.length;
+      return String(year).includes(query) || yearEvents.some(event => event.text.toLowerCase().includes(query));
+    });
+    return `${pageHead}${calendarHeader}${contentStart}
+        <div class="year-grid-large">${visibleYears.map(year => {
+          const days = yearDays(year);
+          const yearEvents = days.flatMap(day => filteredEvents(day));
+          const previews = yearEvents.slice(0,4).map(event => {
+            const day = days.find(d => (events[d] || []).includes(event));
+            const iconHtml = event.iconUrl ? `<img src="${event.iconUrl}" alt="" style="width:12px;height:12px;object-fit:contain;vertical-align:middle;opacity:.82;margin:0 4px 1px 0;">` : '';
+            return `<div class="year-preview-line"><span class="year-preview-day">Day ${day - firstDayOfYear(year) + 1}</span>${iconHtml}${event.text}</div>`;
+          }).join('');
+          return `<div class="decade-year-card ${year===yearForDay(state.currentDay)?'current':''}" data-calendar-year="${year}">
+            <div class="year-title">${year}</div>
+            <div class="year-summary">${yearEvents.length ? `${yearEvents.length} event${yearEvents.length===1?'':'s'}` : 'No scheduled events'}</div>
+            ${previews ? `<div class="year-preview">${previews}</div>` : ''}
+          </div>`;
+        }).join('') || '<div class="calendar-empty">No years match that search.</div>'}</div>
+      ${contentEnd}`;
+  }
+
+  // Timeline mode
+  const allEvents = allEventsByDay(state);
+  const catAllTimeline = calendarCategory.includes('all') || calendarCategory.length === 0;
+  const yearHasEvents = year => {
+    const days = yearDays(year);
+    return days.some(day => {
+      if(!showPast && day < state.currentDay) return false;
+      const dayEvs = (allEvents[day] || []).filter(ev => catAllTimeline || calendarCategory.includes(ev.category));
+      if(!query) return dayEvs.length > 0;
+      return dayEvs.some(ev => ev.text.toLowerCase().includes(query)) || String(year).includes(query);
+    });
+  };
+  const iconsForYear = year => {
+    const days = yearDays(year);
+    const seen = new Set();
+    const icons = [];
+    days.forEach(day => {
+      if(!showPast && day < state.currentDay) return;
+      (allEvents[day] || []).forEach(ev => {
+        if((catAllTimeline || calendarCategory.includes(ev.category)) && ev.iconUrl && !seen.has(ev.iconUrl)){
+          seen.add(ev.iconUrl);
+          icons.push(ev.iconUrl);
+        }
+      });
+    });
+    return icons;
+  };
+  const START_YEAR = 1300;
+  const END_YEAR = 2030;
+  const centuries = [];
+  for(let c = Math.floor(START_YEAR / 100) * 100; c <= END_YEAR; c += 100) centuries.push(c);
+  const currentYear = yearForDay(state.currentDay);
+  const centuryBlocks = centuries.map(centuryStart => {
+    const centuryEnd = Math.min(centuryStart + 99, END_YEAR);
+    const rows = [];
+    for(let rowStart = centuryStart; rowStart <= centuryEnd; rowStart += 10){
+      const rowYears = [];
+      for(let y = rowStart; y < rowStart + 10 && y <= centuryEnd; y++) rowYears.push(y);
+      rows.push(rowYears);
+    }
+    const rowsHtml = rows.map(rowYears => {
+              const hasActiveSearch = query || hasActiveFilter;
+        const cells = rowYears.map(year => {
+          const startDay = firstDayOfYear(year);
+          const endDay = startDay + 3;
+          const hasEvents = yearHasEvents(year);
+          if(hasActiveSearch && !hasEvents) return '';
+          const icons = iconsForYear(year);
+          const isCurrent = year === currentYear;
+          const iconsHtml = icons.length ? `<div class="yc-icons">${icons.map(url => `<img src="${url}" alt="">`).join('')}</div>` : '';
+          return `<div class="year-cell${isCurrent ? ' current-year' : ''}${hasEvents ? ' has-events' : ''}" data-calendar-year="${year}" title="${year} · Days ${startDay}–${endDay}">
+            <span class="yc-year">${year}</span>
+            <span class="yc-days">${startDay}–${endDay}</span>
+            ${iconsHtml}
+          </div>`;
+        }).join('');
+      return `<div class="year-row">${cells}</div>`;
+    }).join('');
+    return `<div class="century-block"><div class="century-heading">${centuryStart}s</div>${rowsHtml}</div>`;
+  }).join('');
+  return `${pageHead}${calendarHeader}${contentStart}${centuryBlocks || '<div class="calendar-empty">No calendar data available.</div>'}${contentEnd}`;
+}
+
+function renderEventList(){
+  const events = allEventsByDay(state);
+  const categoryTitles = { birthdays:'All Future Birthdays', deaths:'All Future Deaths', expiration:'All Future Expiration Dates', 'historical-wars':'All Future Wars', 'historical-outbreaks':'All Future Outbreaks', 'historical-others':'All Future Historical Events (Others)' };
+  const title = categoryTitles[listFilterCategory] || 'Future Events';
+  const matching = [];
+  Object.keys(events).forEach(dayNum => {
+    const d = Number(dayNum);
+    if(d >= state.currentDay){
+      events[d].forEach(ev => {
+        if(!listFilterCategory || ev.category === listFilterCategory) matching.push({ day: d, ...ev });
+      });
+    }
+  });
+  matching.sort((a,b) => a.day - b.day);
+  return `
+    <div class="page-head"><span class="eyebrow">Category filter</span><h2>${title}</h2><p>Click any event below to jump straight to that day's page.</p></div>
+    <div class="card card-pad">
+      <div style="margin-bottom: 16px;"><button class="btn small" data-action="back-to-calendar">← Back to Calendar</button></div>
+      ${matching.length ? `<ul class="upcoming-list">${matching.map(item => `
+        <li data-calendar-day="${item.day}" title="Open ${dayLabel(item.day)}"><span class="u-day">Day ${item.day}</span><div><div class="line-art"><button class="event-icon-btn" data-filter-cat="${item.category}"><img src="${item.iconUrl}" alt="icon"></button>${eventMarkup(item.text)}</div><div class="u-sub">${weekdayFor(item.day)} · ${yearForDay(item.day)} <span class="tag">in ${item.day - state.currentDay}d</span></div></div></li>`).join('')}</ul>` : '<div class="calendar-empty">No upcoming events found for this category.</div>'}
+    </div>`;
+}
+
+function renderAddHistoryModal(){
+  return `<div class="modal-overlay" id="modal-overlay"><div class="modal"><div class="modal-pad">
+    <h3>Add Historical Event</h3>
+    <div class="form-grid">
+      <div><label>Start Year</label><input id="hist-start-year" type="number" value="${yearForDay(state.currentDay)}"></div>
+      <div><label>End Year <span style="font-weight:normal;">(leave blank for a single-year event)</span></label><input id="hist-end-year" type="number" placeholder="Optional"></div>
+      <div><label>Type of Event</label>
+        <select id="hist-subcat" required>
+          <option value="" selected>Please select</option>
+          <option value="wars">War</option>
+          <option value="outbreaks">Outbreak</option>
+          <option value="famines">Famine</option>
+          <option value="others">Other Historical Event</option>
+        </select>
+      </div>
+      <div class="full"><label>Event Description</label><input id="hist-text" placeholder="e.g., The Great Famine begins"></div>
+    </div>
+    <div class="modal-actions"><div></div><div class="right"><button class="btn" data-action="close-modal">Cancel</button><button class="btn green" data-action="save-history" disabled>Add Event</button></div></div>
+  </div></div></div>`;
+}
+
+function renderRules(){
+  return `
+  <div class="page-head"><span class="eyebrow">The challenge guide</span><h2>Rules</h2><p>Keep the general rules here, with century-specific volumes ready to open as the family moves through time.</p></div>
+  <div class="card card-pad rules-copy">
+    <div class="jump-to">
+      <label for="rules-jump">Jump to:</label>
+      <select id="rules-jump" onchange="if(this.value) document.querySelector(this.value).scrollIntoView({behavior:'smooth'}); this.value='';">
+        <option value="">Select a section...</option>
+        <option value="#aging">Aging</option>
+        <option value="#life-expectancy">Life Expectancy</option>
+        <option value="#death-rolls">Death Rolls</option>
+        <option value="#pregnancy">Pregnancy Chances</option>
+        <option value="#descendants">Descendants</option>
+        <option value="#marriages">Marriages</option>
+        <option value="#general-rules">General Rules</option>
+      </select>
+    </div>
+    <h3>Objective</h3>
+    <p>Start in 1300s England and guide your family through history until you reach present-day America. The goal is to survive the changing conditions of each era while playing as historically accurately as possible and keeping your family line alive through the generations.</p>
+    <h3 id="aging">Aging</h3>
+    ${renderAgeTable()}
+    <h3 id="life-expectancy">Life Expectancy</h3>
+    ${renderLifeExpectTable()}
+    <h3 id="death-rolls">Death Rolls</h3>
+    ${renderDeathRollTable()}
+    <h3 id="pregnancy">Pregnancy Chances</h3>
+    ${renderPregnancyTable()}
+    <p></p>
+    ${renderSideHousePregnancyTable()}
+    <h3 id="descendants">Descendants</h3>
+    <h3 id="marriages">Marriages</h3>
+    <h3 id="general-rules">General Rules</h3>
+  </div>`;
+}
+
+function renderDateModal(){
+  return `<div class="modal-overlay" id="modal-overlay"><div class="modal"><div class="modal-pad">
+    <h3>Change current date</h3>
+    <div class="form-grid"><div class="full"><label>Current in-game day</label><input id="date-modal-input" type="number" min="1" value="${state.currentDay}"></div></div>
+    <div class="computed-box">Today will become <b>Day <span id="date-preview-day">${state.currentDay}</span></b> in the challenge calendar.</div>
+    <div class="modal-actions"><div></div><div class="right"><button class="btn" data-action="close-modal">Cancel</button><button class="btn green" data-action="save-date">Set date</button></div></div>
+  </div></div></div>`;
+}
+
+function renderAgeTable(){
+  const rows = [['Pregnancy','3','9 months','0 years'],['Babies','1','3 months','0 - 3 months'],['Infants','5','1.25 Years','3 months - 1.5 Years'],['Toddler','18','4.5 Years','1.5 - 6 Years'],['Child','28','7 Years','6 - 13 Years'],['Teen','28','7 Years','13 - 20 Years'],['Young Adult','40','10 Years','20 - 30 Years'],['Adult','80','20 Years','30 - 50 Years'],['Elder','80','20 Years','50 - 70 Years']];
+  return `<table class="roster"><thead><tr><th>Life Stage</th><th>Sim Days</th><th>Length</th><th>Age</th></tr></thead><tbody>${rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+}
+function renderLifeExpectTable(){
+  const rows = [['Birthing Moms','<5%'],['Babies','30%'],['Infants','20%'],['Toddler','20%'],['Child','30%'],['Teen','15%'],['Young Adult','15%'],['Adult','35%'],['Elder','50%']];
+  return `<table class="roster"><thead><tr><th>Life Stage</th><th>Death Risk</th></tr></thead><tbody>${rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+}
+function renderDeathRollTable(){
+  const rows = [['Birthing Moms','1'],['Babies','1, 5, 7, 10, 15, 20'],['Infants','12, 16, 18, 20'],['Toddler','4, 8, 12'],['Child','9, 19'],['Teen','7'],['Young Adult','2, 6, 11, 13, 14'],['Adult','2, 6, 9, 12, 15, 17, 19'],['Elder','<9'],['End of Life','Roll for additional years']];
+  return `<table class="roster"><thead><tr><th>Life Stage</th><th>Roll</th></tr></thead><tbody>${rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+}
+function renderPregnancyTable(){
+  const rows = [['Teen','30%'],['Young Adult','25%'],['Adult','20%'],['Adult Pt. 2','10%'],['Elder','0%']];
+  return `<table class="roster"><thead><tr><th>Life Stage</th><th>Chance of Pregnancy</th></tr></thead><tbody>${rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+}
+function renderSideHousePregnancyTable(){
+  const rows = [['1–5','Number of Pregnancies'],['6','No Children']];
+  return `<table class="roster"><thead><tr><th>Roll</th><th>Result</th></tr></thead><tbody>${rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+}
+function renderRuleModal(){
+  return `<div class="modal-overlay" id="modal-overlay"><div class="modal"><div class="modal-pad"><h3>${modal.title}</h3><p class="rules-copy">${modal.dates} rules can be added here when you decide whether this volume should contain typed text, an embedded PDF, or both.</p>
+    <div class="modal-actions"><div></div><div class="right"><button class="btn green" data-action="close-modal">Close</button></div></div></div></div></div>`;
+}
+
+/* ---------------------------------------------------------
+   RENDER: JOURNAL
+--------------------------------------------------------- */
+function renderJournal(){
+  const days = Object.keys(state.notes).map(Number).filter(day => state.notes[day] && state.notes[day].trim()).sort((a,b) => b - a);
+  return `
+    <div class="page-head"><span class="eyebrow">The record</span><h2>Journal</h2><p>Your personal record of the story. Calendar events stay in Calendar; this page is for your words.</p></div>
+    <div class="card card-pad">
+      <div class="journal-new">
+        <input type="number" id="new-entry-day" placeholder="Day #" value="${selectedDay || state.currentDay}">
+        <button class="btn small" data-action="new-entry">+ Add entry for this day</button>
+      </div>
+      ${ days.length === 0 ? '<div class="empty-journal">Your journal is blank. Add an entry from any day view.</div>' : days.map(d => `
+        <div class="journal-entry">
+          <div class="j-head"><span class="j-day">Day ${d}</span><span class="j-dow">${weekdayFor(d).toLowerCase()}</span></div>
+          <textarea data-note-day="${d}" placeholder="Add a note for this day…">${state.notes[d]}</textarea>
+        </div>`).join('') }
+    </div>`;
+}
+
+/* ---------------------------------------------------------
+   RENDER: DICE
+--------------------------------------------------------- */
+function renderDice(){
+  return `
+    <div class="page-head"><span class="eyebrow">Fate decides</span><h2>Roll The Dice</h2><p>Use the tables below to determine outcomes for your sims — births, deaths, and the turning points of each life stage.</p></div>
+    <div class="card card-pad">
+      <div class="dice-widget-placeholder">
+        <div class="dice-placeholder-inner">
+          <div class="dice-placeholder-icon">⚄</div>
+          <div class="dice-placeholder-label">Widget coming soon</div>
+          <div class="dice-placeholder-sub">Your dice roller will appear here.</div>
+        </div>
+      </div>
+    </div>`;
+}
+function renderRosterTable(sims){
+  const cols = [
+    { key:'name',      label:'Name' },
+    { key:'generation',label:'Gen' },
+    { key:'sex',       label:'Sex' },
+    { key:'birthDay',  label:'Day born' },
+    { key:'yearBorn',  label:'Year born' },
+    { key:'age',       label:'Age' },
+    { key:'stage',     label:'Life stage' },
+    { key:'status',    label:'Status' },
+  ];
+  const arrow = col => {
+    if(rosterSortCol !== col.key) return `<span style=";margin-left:4px;color:rgba(33,40,31,.6);">↕</span>`;
+    return `<span style="margin-left:4px;color:var(--wax);">${rosterSortDir === 1 ? '↑' : '↓'}</span>`;
+  };
+  const getValue = (s, key) => {
+    if(key === 'name')       return (s.firstName + ' ' + s.lastName).toLowerCase();
+    if(key === 'generation') return s.generation || '';
+    if(key === 'sex')        return s.sex || '';
+    if(key === 'birthDay')   return s.birthDay;
+    if(key === 'yearBorn')   return parseInt(s.yearBorn, 10) || 0;
+    if(key === 'age')        return s.birthDay; // proxy for age (same ordering)
+    if(key === 'stage')      return stageFor(s.birthDay, state.currentDay, state.offsets);
+    if(key === 'status')     return s.status || '';
+    return '';
+  };
+  const sorted = [...sims].sort((a, b) => {
+    const va = getValue(a, rosterSortCol);
+    const vb = getValue(b, rosterSortCol);
+    if(typeof va === 'number' && typeof vb === 'number') return (va - vb) * rosterSortDir;
+    return String(va).localeCompare(String(vb)) * rosterSortDir;
+  });
+  const thStyle = 'cursor:pointer;user-select:none;white-space:nowrap;';
+  return `<table class="roster">
+    <thead><tr>${cols.map(col =>
+      `<th style="${thStyle}" data-roster-sort="${col.key}">${col.label}${arrow(col)}</th>`
+    ).join('')}</tr></thead>
+    <tbody>
+      ${sorted.map(s => {
+        const stage = s.status === 'Deceased' ? '—' : stageFor(s.birthDay, state.currentDay, state.offsets);
+        return `<tr data-sim="${s.id}">
+          <td class="sim-name">${s.photo ? `<img class="roster-portrait" src="${s.photo}" alt="">` : '<span class="roster-portrait roster-portrait-empty"></span>'}${s.firstName} ${s.lastName}</td>
+          <td>${s.generation||'—'}</td>
+          <td>${s.sex||'—'}</td>
+          <td>${s.birthDay}</td>
+          <td>${s.yearBorn || '—'}</td>
+          <td>${ageDisplay(s.birthDay, state.currentDay)}</td>
+          <td>${stage}</td>
+          <td><span class="status-dot ${s.status==='Alive'?'alive':'deceased'}"></span>${s.status}</td>
+        </tr>`;
+      }).join('')}
+    </tbody>
+  </table>`;
+}
+/* ---------------------------------------------------------
+   RENDER: ROSTER
+--------------------------------------------------------- */
+function renderRoster(){
+  const alive = state.sims.filter(s => s.status === 'Alive').length;
+  const deceased = state.sims.filter(s => s.status === 'Deceased').length;
+  const stageCounts = {};
+  state.sims.filter(s=>s.status==='Alive').forEach(s => {
+    const st = stageFor(s.birthDay, state.currentDay, state.offsets);
+    stageCounts[st] = (stageCounts[st]||0) + 1;
+  });
+  const filtered = state.sims.filter(s => {
+    const q = rosterSearch.toLowerCase();
+    if(!q) return true;
+    const relationText = computeRelationLines(s, state.sims).join(' ');
+    return (s.firstName+' '+s.lastName+' '+s.generation+' '+relationText).toLowerCase().includes(q);
+  }).sort((a,b) => a.birthDay - b.birthDay);
+  return `
+    <div class="page-head"><span class="eyebrow">Your bloodline</span><h2>Family Tree</h2><p>Browse every sim as a family tree or return to the full list, with each profile retaining its complete record.</p></div>
+    <div class="card card-pad">
+      <div class="roster-stats">
+        <div class="stat"><div class="num">${state.sims.length}</div><div class="lbl">TOTAL</div></div>
+        <div class="stat"><div class="num">${alive}</div><div class="lbl">ALIVE</div></div>
+        <div class="stat dead"><div class="num">${deceased}</div><div class="lbl">DECEASED</div></div>
+        ${Object.entries(stageCounts).map(([k,v]) => `<div class="stat"><div class="num">${v}</div><div class="lbl">${k.toUpperCase()}</div></div>`).join('')}
+      </div>
+    </div>
+    <div class="card card-pad">
+      <div class="roster-toolbar">
+        <div class="roster-view-btns">
+          <button class="btn small ${rosterView==='list'?'selected':''}" data-roster-view="list">List</button>
+          <button class="btn small ${rosterView==='tree'?'selected':''}" data-roster-view="tree">Family tree</button>
+        </div>
+        <input type="search" id="roster-search" placeholder="Search name or generation…" value="${rosterSearch}">
+        <div class="roster-spacer"></div>
+        <button class="btn red" data-action="new-sim">+ Add sim</button>
+      </div>
+      ${rosterView === 'tree' ? renderFamilyTree(filtered) : renderRosterTable(filtered)}
+    </div>`;
+}
+
+/* ---------------------------------------------------------
+   PARENT SEARCH FIELD (searchable sim picker)
+--------------------------------------------------------- */
+function parentSearchField(label, inputId, excludeId, selectedId){
+  const selected = state.sims.find(s => s.id === selectedId);
+  const displayVal = selected ? `${selected.firstName} ${selected.lastName}` : '';
+  const options = state.sims
+    .filter(s => s.id !== excludeId)
+    .sort((a,b) => (a.firstName+a.lastName).localeCompare(b.firstName+b.lastName));
+  const optionsHtml = options.map(s =>
+    `<div class="tal-option" data-parent-pick="${inputId}::${s.id}" data-parent-name="${s.firstName} ${s.lastName}">
+      ${s.firstName} ${s.lastName}
+    </div>`
+  ).join('') || '<div class="tal-empty">No sims available</div>';
+  return `<div>
+    <label>${label}</label>
+    <div class="parent-tal-wrap">
+      <input class="tal-select-input" id="${inputId}" autocomplete="off" placeholder="Search by name…" value="${displayVal}">
+      <input type="hidden" id="${inputId}-id" value="${selectedId || ''}">
+      <div class="tal-dropdown" id="tal-dropdown-${inputId}">
+        ${optionsHtml}
+        <div class="tal-option" data-parent-pick="${inputId}::" data-parent-name="" style="color:rgba(33,40,31,.45);font-style:italic;">— clear —</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ---------------------------------------------------------
+   RENDER: ADD SIM MODAL
+--------------------------------------------------------- */
+function renderModal(){
+  const isNew = editingSimId === 'new';
+  const sim = isNew ? {
+    id:null, firstName:'', lastName:'', generation:'', parentIds:[], spouseId:'', sex:'', birthDay:state.currentDay,
+    yearBorn:'', status:'Alive', yearOfDeath:'', causeOfDeath:'', nationality:'', family:'', yearMarried:'', notes:''
+  } : state.sims.find(s => s.id === editingSimId);
+
+  const stage = stageFor(sim.birthDay, state.currentDay, state.offsets);
+  const nt = !isNew ? nextTransition(sim, state.currentDay, state.offsets) : null;
+  const expDay = getExpirationDay(sim, state.offsets);
+
+  return `
+    <div class="modal-overlay" id="modal-overlay">
+      <div class="modal">
+        <div class="modal-pad">
+          <h3>${isNew ? 'Add a sim' : sim.firstName + ' ' + sim.lastName}</h3>
+          <div class="form-grid">
+            <div><label>First name</label><input id="f-firstName" value="${sim.firstName}"></div>
+            <div><label>Last name</label><input id="f-lastName" value="${sim.lastName}"></div>
+            <div><label>Generation</label><input id="f-generation" value="${sim.generation}" placeholder="e.g. Gen 3"></div>
+            <div><label>Sex</label>
+              <select id="f-sex">
+                <option value="" ${!sim.sex?'selected':''}>—</option>
+                <option value="F" ${sim.sex==='F'?'selected':''}>F</option>
+                <option value="M" ${sim.sex==='M'?'selected':''}>M</option>
+              </select>
+            </div>
+            ${parentSearchField('Mother', 'f-parent1', sim.id, (sim.parentIds||[])[0])}
+            ${parentSearchField('Father', 'f-parent2', sim.id, (sim.parentIds||[])[1])}
+            <div><label>Birth day (in-game day #)</label><input type="number" id="f-birthDay" value="${sim.birthDay}"></div>
+            <div><label>Year born</label><input id="f-yearBorn" value="${sim.yearBorn}"></div>
+            <div><label>Status</label>
+              <select id="f-status">
+                <option value="Alive" ${sim.status==='Alive'?'selected':''}>Alive</option>
+                <option value="Deceased" ${sim.status==='Deceased'?'selected':''}>Deceased</option>
+              </select>
+            </div>
+            <div><label>Nationality</label><input id="f-nationality" value="${sim.nationality}"></div>
+            <div class="death-field" style="display:${sim.status==='Deceased'?'block':'none'}"><label>Year of death</label><input id="f-yearOfDeath" value="${sim.yearOfDeath}"></div>
+            <div class="death-field" style="display:${sim.status==='Deceased'?'block':'none'}"><label>Cause of death</label><input id="f-causeOfDeath" value="${sim.causeOfDeath}"></div>
+            <div><label>Family</label><input id="f-family" value="${sim.family}"></div>
+            <div class="full"><label>Notes</label><textarea id="f-notes">${sim.notes||''}</textarea></div>
+          </div>
+          ${!isNew ? `
+            <div class="computed-box">
+              <b>Current life stage:</b> ${stage} · <b>Age:</b> ${ageDisplay(sim.birthDay, state.currentDay)}<br>
+              <b>Expiration Date:</b> Day ${expDay} (${yearForDay(expDay)})<br>
+              ${nt ? `<b>Next milestone:</b> ${nt.label} on day ${nt.day} (${weekdayFor(nt.day)})` : '<b>Next milestone:</b> none'}
+            </div>
+          ` : ''}
+          <div class="modal-actions">
+            <div>${!isNew ? '<button class="btn" data-action="delete-sim">Delete sim</button>' : ''}</div>
+            <div class="right">
+              <button class="btn" data-action="close-modal">Cancel</button>
+              <button class="btn green" data-action="save-sim">${isNew ? 'Add sim' : 'Save changes'}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function saveSimInfoFields(sim){
+  if(document.getElementById('sim-firstName')) sim.firstName = document.getElementById('sim-firstName').value.trim();
+  // lastName handled by TAL field — value already written to sim on pick/enter; also read input directly as fallback
+  const lastNameInput = document.getElementById('sim-lastName');
+  if(lastNameInput) sim.lastName = lastNameInput.value.trim() || sim.lastName;
+  const statusEl = document.getElementById('sim-status');
+  if(statusEl) sim.status = statusEl.value;
+  const natInput = document.getElementById('sim-nationality');
+  const famInput = document.getElementById('sim-family');
+  if(natInput) sim.nationality = natInput.value.trim();
+  if(famInput) sim.family = famInput.value.trim();
+  const genInput = document.getElementById('sim-generation');
+  if(genInput) sim.generation = genInput.value.trim();
+  const sexInput = document.getElementById('sim-sex');
+  if(sexInput) sim.sex = sexInput.value;
+  if(sim.status === 'Deceased'){
+    const yd = document.getElementById('sim-yearOfDeath');
+    const cd = document.getElementById('sim-causeOfDeath');
+    if(yd) sim.yearOfDeath = yd.value.trim();
+    if(cd) sim.causeOfDeath = cd.value.trim();
+  } else {
+    sim.yearOfDeath = '';
+    sim.causeOfDeath = '';
+  }
+  if(document.getElementById('sim-parent1-id')){
+    const parent1 = document.getElementById('sim-parent1-id').value;
+    const parent2 = document.getElementById('sim-parent2-id').value;
+    sim.parentIds = [parent1, parent2].filter(Boolean);
+  }
+  const notesEl = document.getElementById('sim-notes');
+  if(notesEl) sim.notes = notesEl.value;
+  simEditMode = false;
+  persist();
+  showToast('Sim saved');
+}
+
+function bindCropTool(){
+  const sim = state.sims.find(s => s.id === cropSimId);
+  if(!sim || !sim.photo) return;
+  const canvas = document.getElementById('crop-canvas');
+  const wrap = document.getElementById('crop-wrap');
+  const zoomInput = document.getElementById('crop-zoom');
+  if(!canvas || !wrap) return;
+
+  let styleTag = document.getElementById('crop-tool-dynamic-styles');
+  if (!styleTag) {
+    styleTag = document.createElement('style');
+    styleTag.id = 'crop-tool-dynamic-styles';
+    styleTag.innerHTML = `
+      @keyframes marchingAnts {
+        0% { background-position: 0 0, 0 100%, 0 0, 100% 0; }
+        100% { background-position: 20px 0, -20px 100%, 0 -20px, 100% 20px; }
+      }
+      .crop-marquee-inner {
+        position: absolute;
+        inset: 0;
+        border: none;
+        box-shadow: none;
+        background: transparent;
+        pointer-events: none;
+        animation: marchingAnts 1s linear infinite;
+        background-image: linear-gradient(90deg, #fff 50%, #000 50%), linear-gradient(90deg, #fff 50%, #000 50%), linear-gradient(0deg, #fff 50%, #000 50%), linear-gradient(0deg, #fff 50%, #000 50%);
+        background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+        background-size: 8px 2px, 8px 2px, 2px 8px, 2px 8px;
+        background-position: 0 0, 0 100%, 0 0, 100% 0;
+      }
+      .crop-handle {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: #fff;
+        border: 1px solid #000;
+        pointer-events: none;
+      }
+    `;
+    document.head.appendChild(styleTag);
+  }
+
+  const img = new Image();
+  img.src = sim.photo;
+  const SIZE = 400;
+  canvas.width = SIZE;
+  canvas.height = SIZE;
+  const ctx = canvas.getContext('2d');
+
+  let imgScale = 1;
+  let imgX = 0, imgY = 0;
+  let imgBounds = { x: 0, y: 0, w: SIZE, h: SIZE };
+
+  let selection = null;
+  let mode = null;
+  let startX = 0, startY = 0;
+  let initialSelection = null;
+  let dragging = false;
+
+  let marqueeBox = wrap.querySelector('.crop-container-box');
+  if(!marqueeBox) {
+    marqueeBox = document.createElement('div');
+    marqueeBox.className = 'crop-container-box';
+    marqueeBox.style.position = 'absolute';
+    marqueeBox.style.pointerEvents = 'none';
+
+    const inner = document.createElement('div');
+    inner.className = 'crop-marquee-inner';
+    marqueeBox.appendChild(inner);
+
+    ['tl', 'tr', 'bl', 'br'].forEach(pos => {
+      const h = document.createElement('div');
+      h.className = `crop-handle handle-${pos}`;
+      if(pos === 'tl') { h.style.top = '-4px'; h.style.left = '-4px'; }
+      if(pos === 'tr') { h.style.top = '-4px'; h.style.right = '-4px'; }
+      if(pos === 'bl') { h.style.bottom = '-4px'; h.style.left = '-4px'; }
+      if(pos === 'br') { h.style.bottom = '-4px'; h.style.right = '-4px'; }
+      marqueeBox.appendChild(h);
+    });
+
+    wrap.style.position = 'relative';
+    wrap.appendChild(marqueeBox);
+  }
+
+  function canvasToDisplay(canvasVal) {
+    const rect = wrap.getBoundingClientRect();
+    return canvasVal * (rect.width / SIZE);
+  }
+
+  function updateMarqueeUI() {
+    if (!selection) {
+      marqueeBox.style.display = 'none';
+      return;
+    }
+    marqueeBox.style.display = 'block';
+    marqueeBox.style.left   = canvasToDisplay(selection.x)    + 'px';
+    marqueeBox.style.top    = canvasToDisplay(selection.y)    + 'px';
+    marqueeBox.style.width  = canvasToDisplay(selection.size) + 'px';
+    marqueeBox.style.height = canvasToDisplay(selection.size) + 'px';
+  }
+
+  function draw(){
+    ctx.clearRect(0, 0, SIZE, SIZE);
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--paper-light').trim() || '#F7F0DC';
+    ctx.fillRect(0, 0, SIZE, SIZE);
+    const w = img.naturalWidth * imgScale;
+    const h = img.naturalHeight * imgScale;
+    ctx.drawImage(img, imgX, imgY, w, h);
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
+    ctx.lineWidth = 1;                    
+    ctx.strokeRect(imgX, imgY, w, h);
+    updateMarqueeUI();
+  }
+
+  img.crossOrigin = 'anonymous';
+  img.onload = () => {
+    imgScale = Math.min(SIZE / img.naturalWidth, SIZE / img.naturalHeight);
+    const w = img.naturalWidth * imgScale;
+    const h = img.naturalHeight * imgScale;
+    imgX = (SIZE - w) / 2;
+    imgY = (SIZE - h) / 2;
+    imgBounds = { x: imgX, y: imgY, w, h };
+    selection = null;
+    draw();
+  };
+
+  if(zoomInput) zoomInput.parentElement.style.display = 'none';
+
+  function getCanvasCoords(e) {
+    const rect = wrap.getBoundingClientRect();
+    const clientX = e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+    const clientY = e.clientY !== undefined ? e.clientY : (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
+    const scaleX = SIZE / rect.width;
+    const scaleY = SIZE / rect.height;
+    const cx = (clientX - rect.left) * scaleX;
+    const cy = (clientY - rect.top)  * scaleY;
+    return {
+      x: Math.max(imgBounds.x, Math.min(imgBounds.x + imgBounds.w, cx)),
+      y: Math.max(imgBounds.y, Math.min(imgBounds.y + imgBounds.h, cy)),
+      rawX: cx,
+      rawY: cy
+    };
+  }
+
+  function checkHitType(pos) {
+    if (!selection) return 'create';
+    const tol = 25 * (wrap.getBoundingClientRect().width / SIZE);
+    const brX = selection.x + selection.size;
+    const brY = selection.y + selection.size;
+    const nearBR = Math.abs(pos.x - brX) < tol && Math.abs(pos.y - brY) < tol;
+    const nearTL = Math.abs(pos.x - selection.x) < tol && Math.abs(pos.y - selection.y) < tol;
+    const nearTR = Math.abs(pos.x - brX) < tol && Math.abs(pos.y - selection.y) < tol;
+    const nearBL = Math.abs(pos.x - selection.x) < tol && Math.abs(pos.y - brY) < tol;
+
+    if (nearBR || nearTL || nearTR || nearBL) return 'resize';
+    if (pos.x >= selection.x && pos.x <= brX && pos.y >= selection.y && pos.y <= brY) return 'move';
+    return 'cancel';
+  }
+
+  function clampToImage(x, y, size) {
+    const maxX = imgBounds.x + imgBounds.w;
+    const maxY = imgBounds.y + imgBounds.h;
+    size = Math.min(size, maxX - x, maxY - y);
+    x = Math.max(imgBounds.x, Math.min(maxX - size, x));
+    y = Math.max(imgBounds.y, Math.min(maxY - size, y));
+    size = Math.min(size, maxX - x, maxY - y);
+    return { x, y, size: Math.max(0, size) };
+  }
+
+  function onDown(e) {
+    if(e.button !== undefined && e.button !== 0) return;
+    const pos = getCanvasCoords(e);
+    
+    // If clicking outside image bounds, do nothing
+    if (pos.rawX < imgBounds.x || pos.rawX > imgBounds.x + imgBounds.w ||
+        pos.rawY < imgBounds.y || pos.rawY > imgBounds.y + imgBounds.h) {
+      return;
+    }
+
+    const hit = checkHitType(pos);
+
+    if (hit === 'cancel') {
+      selection = null;
+      updateMarqueeUI();
+      e.preventDefault();
+      return;
+    }
+
+    dragging = true;
+    mode = hit;
+    startX = pos.x;
+    startY = pos.y;
+    initialSelection = selection ? { ...selection } : null;
+
+    if (mode === 'create') {
+      selection = { x: pos.x, y: pos.y, size: 0 };
+    }
+    e.preventDefault();
+  }
+
+  function onMove(e) {
+    const pos = getCanvasCoords(e);
+    const insideImg = pos.rawX >= imgBounds.x && pos.rawX <= imgBounds.x + imgBounds.w &&
+                      pos.rawY >= imgBounds.y && pos.rawY <= imgBounds.y + imgBounds.h;
+
+    if (!dragging) {
+      if (!insideImg) {
+        wrap.style.cursor = 'default';
+        return;
+      }
+      if (!selection) {
+        wrap.style.cursor = 'crosshair';
+        return;
+      }
+      const hit = checkHitType(pos);
+      if (hit === 'resize') {
+        const tol = 25 * (wrap.getBoundingClientRect().width / SIZE);
+        const brX = selection.x + selection.size;
+        const brY = selection.y + selection.size;
+        const nearTL = Math.abs(pos.x - selection.x) < tol && Math.abs(pos.y - selection.y) < tol;
+        const nearTR = Math.abs(pos.x - brX) < tol && Math.abs(pos.y - selection.y) < tol;
+        const nearBL = Math.abs(pos.x - selection.x) < tol && Math.abs(pos.y - brY) < tol;
+        const nearBR = Math.abs(pos.x - brX) < tol && Math.abs(pos.y - brY) < tol;
+
+        if (nearTL || nearBR) wrap.style.cursor = 'nwse-resize';
+        else if (nearTR || nearBL) wrap.style.cursor = 'nesw-resize';
+        else wrap.style.cursor = 'nwse-resize';
+      } else if (hit === 'move') {
+        wrap.style.cursor = 'move';
+      } else {
+        wrap.style.cursor = 'crosshair';
+      }
+      return;
+    }
+
+    if (mode === 'create') {
+      const dx = pos.x - startX;
+      const dy = pos.y - startY;
+      const size = Math.max(Math.abs(dx), Math.abs(dy));
+      const rawX = dx < 0 ? startX - size : startX;
+      const rawY = dy < 0 ? startY - size : startY;
+      selection = clampToImage(rawX, rawY, size);
+
+    } else if (mode === 'resize') {
+      const delta = Math.max(pos.x - startX, pos.y - startY);
+      const newSize = Math.max(20, initialSelection.size + delta);
+      selection = clampToImage(initialSelection.x, initialSelection.y, newSize);
+
+    } else if (mode === 'move') {
+      const dx = pos.x - startX;
+      const dy = pos.y - startY;
+      const size = initialSelection.size;
+      const maxX = imgBounds.x + imgBounds.w;
+      const maxY = imgBounds.y + imgBounds.h;
+
+      let x = initialSelection.x + dx;
+      let y = initialSelection.y + dy;
+
+      x = Math.max(imgBounds.x, Math.min(maxX - size, x));
+      y = Math.max(imgBounds.y, Math.min(maxY - size, y));
+
+      selection = { x, y, size };
+      wrap.style.cursor = 'move';
+    }
+
+    updateMarqueeUI();
+    e.preventDefault();
+  }
+
+  function onUp(e) {
+    if (!dragging) return;
+    dragging = false;
+    mode = null;
+    if (selection && selection.size < 20) {
+      selection = null;
+      updateMarqueeUI();
+    }
+  }
+
+  function winMove(e) { onMove(e); }
+  function winUp(e)   { onUp(e); }
+
+  window.addEventListener('mousemove', winMove);
+  window.addEventListener('mouseup',   winUp);
+  window.addEventListener('touchmove', winMove, { passive: false });
+  window.addEventListener('touchend',  winUp);
+
+  wrap.addEventListener('mousedown',  onDown);
+  wrap.addEventListener('touchstart', onDown, { passive: false });
+
+  function teardown() {
+    window.removeEventListener('mousemove', winMove);
+    window.removeEventListener('mouseup',   winUp);
+    window.removeEventListener('touchmove', winMove);
+    window.removeEventListener('touchend',  winUp);
+    wrap.removeEventListener('mousedown',  onDown);
+    wrap.removeEventListener('touchstart', onDown);
+  }
+
+  const saveBtn = document.querySelector('[data-action="save-crop"]');
+  if(saveBtn) saveBtn.onclick = () => {
+    if (!selection || selection.size < 20) {
+      alert('Please draw a crop selection first.');
+      return;
+    }
+    const out = document.createElement('canvas');
+    out.width = 400;
+    out.height = 400;
+    const octx = out.getContext('2d');
+    octx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--paper-light').trim() || '#F7F0DC';
+    octx.fillRect(0, 0, 400, 400);
+
+    const sourceX = (selection.x - imgX) / imgScale;
+    const sourceY = (selection.y - imgY) / imgScale;
+    const sourceSize = selection.size / imgScale;
+
+    octx.drawImage(img, sourceX, sourceY, sourceSize, sourceSize, 0, 0, 400, 400);
+
+    sim.photo = out.toDataURL('image/jpeg', 0.92);
+    if(marqueeBox) marqueeBox.remove();
+    teardown();
+    modal = 'sim-profile';
+    cropSimId = null;
+    persist();
+  };
+}
+
+function bindSimInfoForm(sim){
+  const photoInput = document.getElementById('sim-photo');
+  if(photoInput) photoInput.onchange = e => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = event => { sim.photo = event.target.result; persist(); };
+    reader.readAsDataURL(file);
+  };
+  const editBtn = document.querySelector('[data-action="edit-sim-info"]');
+  if(editBtn) editBtn.onclick = () => { simEditMode = true; render(); };
+  const cancelBtn = document.querySelector('[data-action="cancel-sim-info"]');
+  if(cancelBtn) cancelBtn.onclick = () => { simEditMode = false; render(); };
+  const saveBtn = document.querySelector('[data-action="save-sim-info"]');
+  if(saveBtn) saveBtn.onclick = () => saveSimInfoFields(sim);
+  const statusSelect = document.getElementById('sim-status');
+  if(statusSelect) statusSelect.onchange = () => {
+    const show = statusSelect.value === 'Deceased';
+    document.querySelectorAll('.death-field').forEach(el => el.style.display = show ? 'block' : 'none');
+  };
+  // TAL select2 dropdown interactions
+  ['traits','aspirations','lifestyles'].forEach(key => {
+    const input = document.getElementById(`tag-input-${key}`);
+    const panel = document.getElementById(`tal-dropdown-${key}`);
+    const createRow = document.getElementById(`tal-create-${key}`);
+    if(!input || !panel) return;
+
+    const openPanel = () => panel.classList.add('open');
+    const closePanel = () => { panel.classList.remove('open'); };
+
+    const filterOptions = () => {
+      const q = input.value.trim().toLowerCase();
+      const opts = panel.querySelectorAll('.tal-option');
+      let anyVisible = false;
+      opts.forEach(opt => {
+        const text = opt.dataset.talPick.split('::')[1];
+        const match = !q || text.toLowerCase().includes(q);
+        opt.style.display = match ? '' : 'none';
+        if(match) anyVisible = true;
+      });
+      const emptyEl = panel.querySelector('.tal-empty');
+      if(emptyEl) emptyEl.style.display = (!anyVisible) ? '' : 'none';
+      if(createRow){
+        const rawVal = input.value.trim();
+        const alreadyInLib = (state.libraries[key]||[]).some(v => v.toLowerCase() === rawVal.toLowerCase());
+        const alreadyAdded = (sim[key]||[]).some(v => v.toLowerCase() === rawVal.toLowerCase());
+        if(rawVal && !alreadyInLib && !alreadyAdded){
+          createRow.textContent = `+ Add "${rawVal}"`;
+          createRow.dataset.talCreate = key;
+          createRow.dataset.talCreateVal = rawVal;
+          createRow.style.display = '';
+        } else {
+          createRow.style.display = 'none';
+        }
+      }
+    };
+
+    input.onfocus = () => { openPanel(); filterOptions(); };
+    input.oninput = () => { filterOptions(); if(!panel.classList.contains('open')) openPanel(); };
+    input.onkeydown = e => {
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        const val = input.value.trim();
+        if(!val) return;
+        addLibraryValue(sim, key, val);
+        input.value = '';
+        persist();
+      }
+      if(e.key === 'Escape'){ closePanel(); input.blur(); }
+    };
+
+    // Click on saved suggestion option
+    panel.querySelectorAll('.tal-option:not(.is-added)').forEach(opt => {
+      opt.onmousedown = e => {
+        if(e.target.closest('.tal-lib-remove')) return;
+        e.preventDefault();
+        const val = opt.dataset.talPick.split('::')[1];
+        addLibraryValue(sim, key, val);
+        input.value = '';
+        closePanel();
+        persist();
+      };
+    });
+
+    // Click on X to remove a value from the library suggestions entirely
+    panel.querySelectorAll('.tal-lib-remove').forEach(btn => {
+      btn.onmousedown = e => {
+        e.preventDefault();
+        e.stopPropagation();
+        const [libKey, val] = btn.dataset.talLibRemove.split('::');
+        const libs = state.libraries || (state.libraries = { traits:[], aspirations:[], lifestyles:[] });
+        libs[libKey] = (libs[libKey] || []).filter(v => v !== val);
+        persist();
+      };
+    });
+
+    // Click on create row
+    if(createRow){
+      createRow.onmousedown = e => {
+        e.preventDefault();
+        const val = createRow.dataset.talCreateVal;
+        if(val){ addLibraryValue(sim, key, val); input.value = ''; closePanel(); persist(); }
+      };
+    }
+
+    // Close panel on outside click — persistent listener, scoped to this key's wrap
+    const talWrap = input.closest('.tal-select-wrap');
+    const outsideHandler = e => {
+      if(talWrap && !talWrap.contains(e.target)){
+        closePanel();
+      }
+    };
+    // Remove any previously attached handler for this key before adding a fresh one
+    if(talWrap){
+      const existingKey = `_talOutside_${key}`;
+      if(talWrap[existingKey]) document.removeEventListener('mousedown', talWrap[existingKey]);
+      talWrap[existingKey] = outsideHandler;
+      document.addEventListener('mousedown', outsideHandler);
+    }
+  });
+  // Single-value TAL fields (Last Name, Nationality, Family)
+  ['sim-lastName::lastNames', 'sim-nationality::nationalities', 'sim-family::families'].forEach(pair => {
+    const [inputId, libraryKey] = pair.split('::');
+    const input = document.getElementById(inputId);
+    const panel = document.getElementById(`tal-dropdown-${inputId}`);
+    const createRow = document.getElementById(`tal-create-${inputId}`);
+    if(!input || !panel) return;
+    const openPanel = () => panel.classList.add('open');
+    const closePanel = () => panel.classList.remove('open');
+    const filterOptions = () => {
+      const q = input.value.trim().toLowerCase();
+      const opts = panel.querySelectorAll('.tal-option');
+      let anyVisible = false;
+      opts.forEach(opt => {
+        const val = (opt.dataset.talSinglePick||'').split('::')[1]||'';
+        const match = !q || val.toLowerCase().includes(q);
+        opt.style.display = match ? '' : 'none';
+        if(match) anyVisible = true;
+      });
+      const emptyEl = panel.querySelector('.tal-empty');
+      if(emptyEl) emptyEl.style.display = (!anyVisible && !q) ? '' : 'none';
+      if(createRow){
+        const rawVal = input.value.trim();
+        const alreadyInLib = (state.libraries[libraryKey]||[]).some(v => v.toLowerCase() === rawVal.toLowerCase());
+        if(rawVal && !alreadyInLib){
+          createRow.textContent = `+ Add "${rawVal}"`;
+          createRow.dataset.talSingleCreateVal = rawVal;
+          createRow.style.display = '';
+        } else {
+          createRow.style.display = 'none';
+        }
+      }
+    };
+    input.onfocus = () => { openPanel(); filterOptions(); };
+    input.oninput = () => { filterOptions(); if(!panel.classList.contains('open')) openPanel(); };
+    input.onkeydown = e => {
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        const val = input.value.trim();
+        if(!val) return;
+        const libs = state.libraries || (state.libraries = {});
+        if(!libs[libraryKey]) libs[libraryKey] = [];
+        if(!libs[libraryKey].includes(val)) libs[libraryKey].push(val);
+        // Save the typed value to the sim field so render() doesn't clobber it
+        if(libraryKey === 'lastNames') sim.lastName = val;
+        else if(libraryKey === 'nationalities') sim.nationality = val;
+        else if(libraryKey === 'families') sim.family = val;
+        closePanel();
+        persist();
+      }
+      if(e.key === 'Escape'){ closePanel(); input.blur(); }
+    };
+    panel.querySelectorAll('[data-tal-single-pick]').forEach(opt => {
+      opt.onmousedown = e => {
+        if(e.target.closest('.tal-lib-remove')) return;
+        e.preventDefault();
+        const val = (opt.dataset.talSinglePick||'').split('::')[1]||'';
+        input.value = val;
+        // Save to sim so render() doesn't reset the field
+        if(libraryKey === 'lastNames') sim.lastName = val;
+        else if(libraryKey === 'nationalities') sim.nationality = val;
+        else if(libraryKey === 'families') sim.family = val;
+        closePanel();
+      };
+    });
+    panel.querySelectorAll('.tal-lib-remove').forEach(btn => {
+      btn.onmousedown = e => {
+        e.preventDefault(); e.stopPropagation();
+        const [lk, val] = btn.dataset.talLibRemove.split('::');
+        const libs = state.libraries || {};
+        if(libs[lk]) libs[lk] = libs[lk].filter(v => v !== val);
+        persist();
+      };
+    });
+    if(createRow){
+      createRow.onmousedown = e => {
+        e.preventDefault();
+        const val = createRow.dataset.talSingleCreateVal;
+        if(val){
+          const libs = state.libraries || (state.libraries = {});
+          if(!libs[libraryKey]) libs[libraryKey] = [];
+          if(!libs[libraryKey].includes(val)) libs[libraryKey].push(val);
+          input.value = val;
+          // Save to sim so render() doesn't reset the field
+          if(libraryKey === 'lastNames') sim.lastName = val;
+          else if(libraryKey === 'nationalities') sim.nationality = val;
+          else if(libraryKey === 'families') sim.family = val;
+          closePanel();
+          persist();
+        }
+      };
+    }
+    const talWrap = input.closest('.tal-select-wrap');
+    if(talWrap){
+      const handler = e => { if(!talWrap.contains(e.target)) closePanel(); };
+      document.addEventListener('mousedown', handler);
+    }
+  });
+
+  // Tag remove from sim
+  document.querySelectorAll('[data-remove-tag]').forEach(btn => {
+    btn.onclick = () => { const [key, value] = btn.dataset.removeTag.split('::'); removeLibraryValue(sim, key, value); persist(); };
+  });
+  // Aspiration completion
+  document.querySelectorAll('[data-aspiration]').forEach(input => {
+    input.onchange = () => { sim.aspirationCompleted[input.dataset.aspiration] = input.checked; persist(); };
+  });
+  // Kill button — mark sim as deceased at current year
+  const killBtn = document.querySelector('[data-action="prompt-kill-sim"]');
+  if(killBtn) killBtn.onclick = () => {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.innerHTML = `
+      <div class="modal" style="max-width:400px;border-top-color:var(--wax);">
+        <div class="modal-pad">
+          <h3 style="color:var(--wax);margin-bottom:10px;">Record death?</h3>
+          <p style="font-size:14px;color:rgba(33,40,31,.7);line-height:1.6;margin:0 0 22px;">Mark <strong>${sim.firstName} ${sim.lastName}</strong> as deceased in the year <strong>${yearForDay(state.currentDay)}</strong>. You can edit the year on their profile afterward.</p>
+          <div class="modal-actions"><div></div><div class="right">
+            <button class="btn" id="kill-cancel-btn">Cancel</button>
+            <button class="btn red" id="kill-confirm-btn">Confirm death</button>
+          </div></div>
+        </div>
+      </div>`;
+    document.body.appendChild(overlay);
+    overlay.onclick = e => { if(e.target === overlay) overlay.remove(); };
+    document.getElementById('kill-cancel-btn').onclick = () => overlay.remove();
+    document.getElementById('kill-confirm-btn').onclick = () => {
+      sim.status = 'Deceased';
+      sim.yearOfDeath = sim.yearOfDeath || String(yearForDay(state.currentDay));
+      overlay.remove();
+      persist();
+      showToast(`${sim.firstName} ${sim.lastName} marked as deceased`);
+    };
+  };
+
+  // Delete sim with confirmation — modal popup
+  const deleteBtn = document.querySelector('[data-action="prompt-delete-sim"]');
+  if(deleteBtn) deleteBtn.onclick = () => {
+    const sim = state.sims.find(s => s.id === selectedSimId);
+    const simName = sim ? `${sim.firstName} ${sim.lastName}` : 'this sim';
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.id = 'delete-confirm-overlay';
+    overlay.innerHTML = `
+      <div class="modal" style="max-width:400px;border-top-color:var(--wax);">
+        <div class="modal-pad">
+          <h3 style="color:var(--wax);margin-bottom:10px;">Delete sim?</h3>
+          <p style="font-size:14px;color:rgba(33,40,31,.7);line-height:1.6;margin:0 0 22px;">This will permanently remove <strong>${simName}</strong> and all their data. There's no undoing this.</p>
+          <div class="modal-actions"><div></div><div class="right">
+            <button class="btn" id="delete-cancel-modal-btn">Cancel</button>
+            <button class="btn red" id="delete-confirm-modal-btn">Yes, delete ${simName}</button>
+          </div></div>
+        </div>
+      </div>`;
+    document.body.appendChild(overlay);
+    overlay.onclick = e => { if(e.target === overlay) overlay.remove(); };
+    document.getElementById('delete-cancel-modal-btn').onclick = () => overlay.remove();
+    document.getElementById('delete-confirm-modal-btn').onclick = () => {
+      state.sims = state.sims.filter(s => s.id !== selectedSimId);
+      overlay.remove();
+      modal = null; simEditMode = false;
+      persist();
+      showToast('Sim deleted');
+    };
+  };
+
+  // Marriage, child & parent action buttons
+  const addMarriageBtn = document.querySelector('[data-action="open-add-marriage"]');
+  if(addMarriageBtn) addMarriageBtn.onclick = () => { modal = 'add-marriage'; render(); };
+  const addChildBtn = document.querySelector('[data-action="open-add-child"]');
+  if(addChildBtn) addChildBtn.onclick = () => { modal = 'add-child'; render(); };
+  const addParentsBtn = document.querySelector('[data-action="open-add-parents"]');
+  if(addParentsBtn) addParentsBtn.onclick = () => { modal = 'add-parents'; render(); };
+}
+
+/* ---------------------------------------------------------
+   PARENT SEARCH FIELD BINDING
+--------------------------------------------------------- */
+function bindParentSearchFields(){
+  ['f-parent1','f-parent2','sim-parent1','sim-parent2','add-parent1','add-parent2','marriage-spouse','child-existing'].forEach(inputId => {
+    const input = document.getElementById(inputId);
+    const hiddenInput = document.getElementById(`${inputId}-id`);
+    const panel = document.getElementById(`tal-dropdown-${inputId}`);
+    if(!input || !panel || !hiddenInput) return;
+
+    const positionPanel = () => {
+      const rect = input.getBoundingClientRect();
+      panel.style.top = (rect.bottom + 4) + 'px';
+      panel.style.left = rect.left + 'px';
+      panel.style.width = rect.width + 'px';
+      panel.style.maxWidth = rect.width + 'px';
+      panel.style.right = 'auto';
+    };
+    let _scrollListener = null;
+    const openPanel = () => {
+      positionPanel();
+      panel.classList.add('open');
+      if(!_scrollListener){
+        _scrollListener = () => { if(panel.classList.contains('open')) positionPanel(); };
+        window.addEventListener('scroll', _scrollListener, { passive: true });
+        // Also reposition if the modal itself scrolls
+        const modalEl = input.closest('.modal');
+        if(modalEl) modalEl.addEventListener('scroll', _scrollListener, { passive: true });
+      }
+    };
+    const closePanel = () => {
+      panel.classList.remove('open');
+      if(_scrollListener){
+        window.removeEventListener('scroll', _scrollListener);
+        const modalEl = input.closest('.modal');
+        if(modalEl) modalEl.removeEventListener('scroll', _scrollListener);
+        _scrollListener = null;
+      }
+    };
+
+    const filterOptions = () => {
+      const q = input.value.trim().toLowerCase();
+      const opts = panel.querySelectorAll('[data-parent-pick]');
+      opts.forEach(opt => {
+        const name = (opt.dataset.parentName || '').toLowerCase();
+        // always show the clear option
+        if(!opt.dataset.parentName && opt.dataset.parentPick){
+          opt.style.display = q ? 'none' : '';
+          return;
+        }
+        (!q || name.includes(q)) ? opt.style.removeProperty('display') : opt.style.setProperty('display', 'none', 'important');
+      });
+    };
+
+    input.onfocus = () => { openPanel(); filterOptions(); };
+    input.oninput = () => { filterOptions(); if(!panel.classList.contains('open')) openPanel(); hiddenInput.value = ''; };
+    input.onkeydown = e => { if(e.key === 'Escape'){ closePanel(); input.blur(); } };
+
+    panel.querySelectorAll('[data-parent-pick]').forEach(opt => {
+      opt.onmousedown = e => {
+        e.preventDefault();
+        const [, simId] = opt.dataset.parentPick.split('::');
+        hiddenInput.value = simId || '';
+        input.value = opt.dataset.parentName || '';
+        closePanel();
+      };
+    });
+
+    // close on outside click
+    const outsideHandler = e => { if(!input.closest('.parent-tal-wrap').contains(e.target)) closePanel(); };
+    const wrap = input.closest('.parent-tal-wrap');
+    if(wrap){
+      const key = `_parentOutside_${inputId}`;
+      if(wrap[key]) document.removeEventListener('mousedown', wrap[key]);
+      wrap[key] = outsideHandler;
+      document.addEventListener('mousedown', outsideHandler);
+    }
+  });
+}
+
+/* ---------------------------------------------------------
+   EVENTS
+--------------------------------------------------------- */
+// Track collapsed state across renders
+const _collapsedSections = new Set();
+
+function bindEvents(){
+  if(calendarScrollHandler){ window.removeEventListener('scroll', calendarScrollHandler); calendarScrollHandler = null; }
+
+  // Collapsible section headers
+  document.querySelectorAll('.collapsible-trigger').forEach(trigger => {
+    const targetId = trigger.dataset.collapseTarget;
+    const body = targetId ? document.getElementById(targetId) : null;
+    const arrow = trigger.querySelector('.collapse-arrow');
+    if(!body) return;
+    // Apply persisted collapsed state
+    if(_collapsedSections.has(targetId)){
+      body.classList.add('collapsed');
+      if(arrow) arrow.style.transform = 'rotate(180deg)';
+    }
+    trigger.onclick = () => {
+      const isNowCollapsed = body.classList.toggle('collapsed');
+      if(arrow) arrow.style.transform = isNowCollapsed ? 'rotate(180deg)' : '';
+      if(isNowCollapsed) _collapsedSections.add(targetId);
+      else _collapsedSections.delete(targetId);
+    };
+  });
+
+  bindParentSearchFields();
+
+  document.querySelectorAll('.spine-nav button').forEach(btn => {
+    btn.onclick = () => { view = btn.dataset.view; if(view === 'calendar'){ calendarMode='year'; calendarYear=yearForDay(state.currentDay); } render(); };
+  });
+
+  document.getElementById('export-btn').onclick = exportData;
+  document.getElementById('import-btn').onclick = () => document.getElementById('file-input').click();
+  document.getElementById('file-input').onchange = importData;
+
+  document.querySelectorAll('[data-filter-cat]').forEach(btn => {
+    btn.onclick = e => { e.stopPropagation(); listFilterCategory = btn.dataset.filterCat; view = 'event-list'; render(); };
+  });
+
+  if(view === 'event-list'){
+    document.querySelector('[data-action="back-to-calendar"]').onclick = () => { view = 'calendar'; render(); };
+    document.querySelectorAll('[data-calendar-day]').forEach(item => {
+      item.onclick = () => { goToDay(Number(item.dataset.calendarDay)); render(); };
+    });
+  }
+
+  if(view === 'timeline'){
+    document.querySelector('[data-action="day-plus"]').onclick = () => { state.currentDay++; persist(); };
+    document.querySelector('[data-action="open-date"]').onclick = () => { modal = 'date'; render(); };
+    document.querySelector('[data-action="open-calendar"]').onclick = () => { view = 'calendar'; calendarMode = 'year'; calendarYear = yearForDay(state.currentDay); render(); };
+    document.querySelectorAll('[data-upcoming-day]').forEach(item => item.onclick = e => { if(e.target.closest('[data-sim-link]') || e.target.closest('[data-filter-cat]')) return; goToDay(Number(item.dataset.upcomingDay)); render(); });
+  }
+
+  if(view === 'calendar'){
+    const addHistory = document.querySelector('[data-action="open-add-history"]');
+    if(addHistory) addHistory.onclick = () => { modal = 'add-history'; render(); };
+    const search = document.getElementById('calendar-search');
+    if(search) search.oninput = e => { calendarSearch = e.target.value; if(!calendarSearch) calendarIncludePast = false; render(); };
+    const jumpYear = document.getElementById('jump-to-year');
+    if(jumpYear){
+      jumpYear.onkeydown = e => {
+        if(e.key === 'Enter'){
+          const val = parseInt(jumpYear.value, 10);
+          if(!isNaN(val) && val >= 1300 && val <= 2030){
+            if(calendarMode === 'decade'){ calendarDecade = Math.floor((val - 1300) / 10) * 10 + 1300; calendarYear = val; } else { calendarYear = val; }
+            render();
+            requestAnimationFrame(() => { const cell = document.querySelector(`[data-calendar-year="${val}"]`); if(cell) cell.scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+          }
+        }
+      };
+      jumpYear.oninput = e => {
+        if(calendarMode === 'all'){
+          const val = parseInt(jumpYear.value, 10);
+          if(!isNaN(val) && val >= 1300 && val <= 2030){
+            requestAnimationFrame(() => { const cell = document.querySelector(`[data-calendar-year="${val}"]`); if(cell) cell.scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+          }
+        }
+      };
+    }
+    const includePastCheck = document.getElementById('include-past-check');
+    if(includePastCheck) includePastCheck.onchange = () => { calendarIncludePast = includePastCheck.checked; render(); };
+
+    const fdBtn = document.getElementById('filter-dropdown-btn');
+    const fdPanel = document.getElementById('filter-dropdown-panel');
+    const FILTER_LABELS = { all:'All Events', birthdays:'Birthdays', births:'Births', deaths:'Deaths', expiration:'Expiration Dates', 'historical-wars':'Wars', 'historical-outbreaks':'Outbreaks', 'historical-famines':'Famines', 'historical-others':'Other' };
+    function updateFilterLabel(){ const lbl = document.getElementById('filter-dropdown-label'); if(!lbl) return; if(calendarCategory.includes('all')||calendarCategory.length===0) lbl.textContent='All Events'; else if(calendarCategory.length===1) lbl.textContent=FILTER_LABELS[calendarCategory[0]]||calendarCategory[0]; else lbl.textContent=calendarCategory.length+' filters active'; }
+    if(fdBtn){ fdBtn.onclick = e => { e.stopPropagation(); filterDropdownOpen = !filterDropdownOpen; const newBtn = document.getElementById('filter-dropdown-btn'); const newPanel = document.getElementById('filter-dropdown-panel'); if(newBtn) newBtn.classList.toggle('open', filterDropdownOpen); if(newPanel) newPanel.classList.toggle('open', filterDropdownOpen); }; }
+    if(fdPanel){
+      fdPanel.querySelectorAll('input[data-filter-val]').forEach(cb => {
+        cb.onchange = () => {
+          const val = cb.dataset.filterVal;
+          const allCb = fdPanel.querySelector('input[data-filter-val="all"]');
+          const allSpecifics = Array.from(fdPanel.querySelectorAll('input[data-filter-val]')).filter(o => o.dataset.filterVal !== 'all');
+          if(val === 'all'){ if(cb.checked){ allSpecifics.forEach(o => { o.checked = true; }); calendarCategory = ['all', ...allSpecifics.map(o => o.dataset.filterVal)]; } else { allSpecifics.forEach(o => { o.checked = false; }); calendarCategory = []; } }
+          else { if(!cb.checked && allCb) allCb.checked = false; const checked = allSpecifics.filter(o => o.checked).map(o => o.dataset.filterVal); if(checked.length === allSpecifics.length){ if(allCb) allCb.checked = true; calendarCategory = ['all', ...checked]; } else { calendarCategory = checked; } }
+          updateFilterLabel();
+          const wasOpen = filterDropdownOpen;
+          render();
+          filterDropdownOpen = wasOpen;
+          const newBtn = document.getElementById('filter-dropdown-btn');
+          const newPanel = document.getElementById('filter-dropdown-panel');
+          if(newBtn) newBtn.classList.toggle('open', filterDropdownOpen);
+          if(newPanel) newPanel.classList.toggle('open', filterDropdownOpen);
+        };
+      });
+    }
+    document.addEventListener('click', function closeFd(e){ const fd = document.getElementById('filter-dropdown'); if(fd && !fd.contains(e.target)){ const b = document.getElementById('filter-dropdown-btn'); const p = document.getElementById('filter-dropdown-panel'); if(b) b.classList.remove('open'); if(p) p.classList.remove('open'); filterDropdownOpen = false; } });
+    document.querySelectorAll('[data-delete-history]').forEach(btn => { btn.onclick = () => { const id = btn.dataset.deleteHistory; state.historicalEvents = state.historicalEvents.filter(ev => ev.id !== id); persist(); render(); }; });
+
+    const previous = document.querySelector('[data-action="calendar-prev"]');
+    if(previous) previous.onclick = () => { calendarDecade = Math.max(1300, calendarDecade - 10); render(); };
+    const next = document.querySelector('[data-action="calendar-next"]');
+    if(next) next.onclick = () => { calendarDecade += 10; render(); };
+    const yearPrevious = document.querySelector('[data-action="calendar-year-prev"]');
+    if(yearPrevious) yearPrevious.onclick = () => { calendarYear = Math.max(1300, calendarYear - 1); render(); };
+    const yearNext = document.querySelector('[data-action="calendar-year-next"]');
+    if(yearNext) yearNext.onclick = () => { calendarYear = Math.min(2030, calendarYear + 1); render(); };
+    const dayPrevious = document.querySelector('[data-action="calendar-day-prev"]');
+    if(dayPrevious) dayPrevious.onclick = () => { selectedDay = (selectedDay || state.currentDay) - 1; render(); };
+    const dayNext = document.querySelector('[data-action="calendar-day-next"]');
+    if(dayNext) dayNext.onclick = () => { selectedDay = (selectedDay || state.currentDay) + 1; render(); };
+    const today = document.querySelector('[data-action="calendar-today"]');
+    if(today) today.onclick = () => { calendarMode = 'day'; selectedDay = state.currentDay; calendarYear = yearForDay(state.currentDay); calendarDecade = Math.floor((calendarYear - 1300) / 10) * 10 + 1300; calendarSearch = ''; render(); window.scrollTo({top:0, behavior:'smooth'}); };
+    const dayMode = document.querySelector('[data-action="calendar-day-mode"]');
+    if(dayMode) dayMode.onclick = () => { calendarMode = 'day'; selectedDay = selectedDay || state.currentDay; render(); };
+    const yearMode = document.querySelector('[data-action="calendar-year"]');
+    if(yearMode) yearMode.onclick = () => { calendarMode = 'year'; calendarYear = calendarYear || yearForDay(state.currentDay); render(); };
+    const decadeMode = document.querySelector('[data-action="calendar-decade-mode"]');
+    if(decadeMode) decadeMode.onclick = () => { calendarMode = 'decade'; calendarDecade = Math.floor((calendarYear - 1300) / 10) * 10 + 1300; render(); };
+    const allMode = document.querySelector('[data-action="calendar-all-mode"]');
+    if(allMode) allMode.onclick = () => { calendarMode = 'all'; calendarSearch = ''; calendarIncludePast = false; render(); };
+
+    document.querySelectorAll('[data-calendar-year]').forEach(card => {
+      card.onclick = e => { if(e.target.closest('[data-sim-link]') || e.target.closest('[data-filter-cat]')) return; calendarYear = Number(card.dataset.calendarYear); calendarMode = 'year'; selectedDay = null; render(); window.scrollTo({top:0, behavior:'smooth'}); };
+    });
+    document.querySelectorAll('[data-calendar-day]').forEach(card => {
+      card.onclick = e => { if(e.target.closest('[data-sim-link]') || e.target.closest('[data-filter-cat]')) return; goToDay(Number(card.dataset.calendarDay)); render(); };
+    });
+    if(calendarMode === 'day'){
+      const dayJournal = document.querySelector('[data-action="day-journal"]');
+      if(dayJournal) dayJournal.onclick = () => { const day = selectedDay || state.currentDay; view='journal'; if(state.notes[day] === undefined) state.notes[day]=''; render(); };
+    }
+    const scrollTopBtn = document.querySelector('.calendar-scroll-top');
+    const headerCard = document.querySelector('.calendar-header-card');
+    if(scrollTopBtn){
+      scrollTopBtn.onclick = () => window.scrollTo({top:0, behavior:'smooth'});
+      if(headerCard){
+        const updateScrollTopVisibility = () => { const pastHeader = headerCard.getBoundingClientRect().bottom < 0; scrollTopBtn.classList.toggle('visible', pastHeader); };
+        updateScrollTopVisibility();
+        window.addEventListener('scroll', updateScrollTopVisibility, { passive: true });
+        calendarScrollHandler = updateScrollTopVisibility;
+      }
+    }
+  }
+
+  if(view === 'sim'){
+    const sim = state.sims.find(item => item.id === selectedSimId);
+    bindSimInfoForm(sim);
+    document.querySelectorAll('[data-day-link]').forEach(el => el.onclick = () => { goToDay(Number(el.dataset.dayLink)); render(); });
+  }
+
+  document.querySelectorAll('[data-sim-link]').forEach(link => link.onclick = e => { e.stopPropagation(); selectedSimId=link.dataset.simLink; simEditMode=false; modal='sim-profile'; render(); });
+
+  if(modal === 'sim-profile'){
+    const sim = state.sims.find(item => item.id === selectedSimId);
+    const closeProfileBtn = document.querySelector('[data-action="close-profile"]');
+    if(closeProfileBtn) closeProfileBtn.onclick = () => { modal=null; simEditMode=false; render(); };
+    const cancelSimInfoBtn = document.querySelector('[data-action="cancel-sim-info"]');
+    if(cancelSimInfoBtn) cancelSimInfoBtn.onclick = () => { simEditMode=false; render(); };
+    bindSimInfoForm(sim);
+    document.querySelectorAll('[data-day-link]').forEach(el => el.onclick = () => { goToDay(Number(el.dataset.dayLink)); modal='sim-profile'; simEditMode=false; render(); });
+    const cropBtn = document.querySelector('[data-action="crop-photo"]');
+    if(cropBtn) cropBtn.onclick = () => { cropSimId = selectedSimId; modal='crop-photo'; render(); bindCropTool(); };
+  }
+
+  if(modal === 'crop-photo'){
+    const overlay = document.getElementById('modal-overlay');
+    // Only close on overlay click if the pointer went down on the overlay itself,
+    // not if the drag started on the canvas and the mouse-up landed here.
+    if(overlay){
+      let overlayDownTarget = null;
+      overlay.addEventListener('mousedown', e => { overlayDownTarget = e.target; });
+      overlay.addEventListener('mouseup', e => {
+        if(e.target === overlay && overlayDownTarget === overlay){
+          modal='sim-profile'; cropSimId=null; render();
+        }
+        overlayDownTarget = null;
+      });
+    }
+    const closeBtn = document.querySelector('[data-action="close-crop"]');
+    if(closeBtn) closeBtn.onclick = () => { modal='sim-profile'; cropSimId=null; render(); };
+    bindCropTool();
+  }
+
+  // ── Add Marriage modal ──
+  if(modal === 'add-marriage'){
+    const overlay = document.getElementById('modal-overlay');
+    if(overlay) overlay.onclick = e => { if(e.target === overlay){ modal='sim-profile'; render(); } };
+    const closeBtn = document.querySelector('[data-action="close-modal"]');
+    if(closeBtn) closeBtn.onclick = () => { modal='sim-profile'; render(); };
+    const saveMarriage = document.querySelector('[data-action="save-marriage"]');
+    if(saveMarriage) saveMarriage.onclick = () => {
+      const spouseId = (document.getElementById('marriage-spouse-id') || {}).value || '';
+      const year = document.getElementById('marriage-year').value.trim();
+      const sim = state.sims.find(s => s.id === selectedSimId);
+      if(!sim) return;
+      if(spouseId){
+        sim.spouseId = spouseId;
+        sim.yearMarried = year;
+        // Also set reverse link on spouse
+        const spouse = state.sims.find(s => s.id === spouseId);
+        if(spouse){ spouse.spouseId = sim.id; if(!spouse.yearMarried) spouse.yearMarried = year; }
+      }
+      modal = null;
+      persist();
+      showToast('Marriage recorded');
+    };
+  }
+
+  // ── Add Child modal ──
+  if(modal === 'add-child'){
+    const overlay = document.getElementById('modal-overlay');
+    if(overlay) overlay.onclick = e => { if(e.target === overlay){ modal='sim-profile'; render(); } };
+    const closeBtn = document.querySelector('[data-action="close-modal"]');
+    if(closeBtn) closeBtn.onclick = () => { modal='sim-profile'; render(); };
+    // Link existing sim
+    const saveChildExisting = document.querySelector('[data-action="save-child-existing"]');
+    if(saveChildExisting) saveChildExisting.onclick = () => {
+      const childId = (document.getElementById('child-existing-id') || {}).value || '';
+      if(!childId){ showToast('Please select a sim first'); return; }
+      const child = state.sims.find(s => s.id === childId);
+      const sim = state.sims.find(s => s.id === selectedSimId);
+      if(child && sim){
+        if(!(child.parentIds || []).includes(sim.id)) child.parentIds = [...(child.parentIds || []), sim.id];
+      }
+      modal = null;
+      persist();
+      showToast('Child linked');
+    };
+    // Create new sim as child
+    const addChildNewSim = document.querySelector('[data-action="add-child-new-sim"]');
+    if(addChildNewSim) addChildNewSim.onclick = () => {
+      pendingChildParentId = selectedSimId;
+      modal = null;
+      editingSimId = 'new';
+      render();
+    };
+  }
+
+  if(view === 'rules'){
+    document.querySelectorAll('[data-action="open-rule-book"]').forEach(book => {
+      book.onclick = () => { modal = { title: book.dataset.ruleTitle, dates: book.dataset.ruleDates }; render(); };
+    });
+  }
+
+  if(view === 'journal'){
+    document.querySelectorAll('[data-note-day]').forEach(ta => { ta.onchange = () => { const d = ta.dataset.noteDay; state.notes[d] = ta.value; persist(); }; });
+    document.querySelector('[data-action="new-entry"]').onclick = () => { const v = document.getElementById('new-entry-day').value; if(v !== '' && state.notes[v] === undefined){ state.notes[v] = ''; persist(); } };
+  }
+
+  if(view === 'roster'){
+    document.getElementById('roster-search').oninput = (e) => { rosterSearch = e.target.value; render(); };
+    document.querySelectorAll('[data-roster-view]').forEach(button => { button.onclick = () => { rosterView = button.dataset.rosterView; render(); }; });
+    document.querySelectorAll('[data-action="new-sim"]').forEach(el => { el.onclick = () => { editingSimId = 'new'; render(); }; });
+    document.querySelectorAll('[data-sim]').forEach(item => { item.onclick = e => { if(e.target.closest('th')) return; selectedSimId = item.dataset.sim; simEditMode=false; modal='sim-profile'; render(); }; });
+    document.querySelectorAll('[data-roster-sort]').forEach(th => {
+      th.onclick = () => {
+        const col = th.dataset.rosterSort;
+        if(rosterSortCol === col){ rosterSortDir *= -1; } else { rosterSortCol = col; rosterSortDir = 1; }
+        render();
+      };
+    });
+  }
+
+  if(editingSimId){
+    const overlay = document.getElementById('modal-overlay');
+    overlay.onclick = (e) => { if(e.target === overlay){ editingSimId = null; pendingChildParentId = null; render(); } };
+    document.querySelector('[data-action="close-modal"]').onclick = () => { editingSimId = null; pendingChildParentId = null; render(); };
+    const statusSel = document.getElementById('f-status');
+    if(statusSel) statusSel.onchange = () => { const show = statusSel.value === 'Deceased'; document.querySelectorAll('.death-field').forEach(el => el.style.display = show ? 'block' : 'none'); };
+    document.querySelector('[data-action="save-sim"]').onclick = saveSim;
+    const delBtn = document.querySelector('[data-action="delete-sim"]');
+    if(delBtn) delBtn.onclick = () => { state.sims = state.sims.filter(s => s.id !== editingSimId); editingSimId = null; persist(); };
+  }
+
+  // ── Add Parents modal ──
+  if(modal === 'add-parents'){
+    const overlay = document.getElementById('modal-overlay');
+    if(overlay) overlay.onclick = e => { if(e.target === overlay){ modal='sim-profile'; render(); } };
+    const closeBtn = document.querySelector('[data-action="close-modal"]');
+    if(closeBtn) closeBtn.onclick = () => { modal='sim-profile'; render(); };
+    bindParentSearchFields();
+    const saveParents = document.querySelector('[data-action="save-parents"]');
+    if(saveParents) saveParents.onclick = () => {
+      const parent1Id = (document.getElementById('add-parent1-id') || {}).value || '';
+      const parent2Id = (document.getElementById('add-parent2-id') || {}).value || '';
+      const sim = state.sims.find(s => s.id === selectedSimId);
+      if(sim){
+        const newParents = [parent1Id, parent2Id].filter(Boolean);
+        sim.parentIds = newParents;
+      }
+      modal = null;
+      persist();
+      showToast('Parents saved');
+    };
+  }
+
+  if(modal && typeof modal === 'object' && modal !== null){
+    // rule-book modal
+    const overlay = document.getElementById('modal-overlay');
+    if(overlay) overlay.onclick = e => { if(e.target === overlay){ modal = null; render(); } };
+    const genericClose = document.querySelector('[data-action="close-modal"]');
+    if(genericClose) genericClose.onclick = () => { modal = null; render(); };
+  }
+
+  if(modal === 'date'){
+    const overlay = document.getElementById('modal-overlay');
+    if(overlay) overlay.onclick = e => { if(e.target === overlay){ modal = null; render(); } };
+    const dateInput = document.getElementById('date-modal-input');
+    if(dateInput){
+      dateInput.oninput = () => { document.getElementById('date-preview-day').textContent = dateInput.value || '—'; };
+      const closeBtn = document.querySelector('[data-action="close-modal"]');
+      if(closeBtn) closeBtn.onclick = () => { modal = null; render(); };
+      document.querySelector('[data-action="save-date"]').onclick = () => { const value = parseInt(dateInput.value, 10); if(!isNaN(value) && value >= 1){ state.currentDay = value; modal = null; persist(); } };
+    }
+  }
+
+  if(modal === 'add-history'){
+    const overlay = document.getElementById('modal-overlay');
+    if(overlay) overlay.onclick = e => { if(e.target === overlay){ modal = null; render(); } };
+    const closeBtn = document.querySelector('[data-action="close-modal"]');
+    if(closeBtn) closeBtn.onclick = () => { modal = null; render(); };
+    const histSubcat = document.getElementById('hist-subcat');
+    const saveHistory = document.querySelector('[data-action="save-history"]');
+    if(histSubcat && saveHistory) histSubcat.onchange = () => { saveHistory.disabled = !histSubcat.value; };
+    const saveHistBtn = document.querySelector('[data-action="save-history"]');
+    if(saveHistBtn) saveHistBtn.onclick = () => {
+      const startYear = parseInt(document.getElementById('hist-start-year').value, 10);
+      const endYearInput = document.getElementById('hist-end-year').value.trim();
+      const endYear = endYearInput ? parseInt(endYearInput, 10) : startYear;
+      const subcat = document.getElementById('hist-subcat').value;
+      const text = document.getElementById('hist-text').value.trim();
+      if(!isNaN(startYear) && !isNaN(endYear) && endYear >= startYear && subcat && text){
+        const startDay = firstDayOfYear(startYear);
+        const endDay = firstDayOfYear(endYear) + 3;
+        state.historicalEvents.push({ id: cryptoId(), startDay, endDay, subcat, text });
+        modal = null;
+        persist();
+        render();
+      }
+    };
+  }
+
+  document.onkeydown = e => {
+    if(e.key === 'Escape' && (editingSimId || modal)){
+      editingSimId = null;
+      pendingChildParentId = null;
+      modal = null;
+      render();
+    }
+  };
+}
+
+function collectFormValues(){
+  const parent1 = (document.getElementById('f-parent1-id') || {}).value || '';
+  const parent2 = (document.getElementById('f-parent2-id') || {}).value || '';
+  return {
+    firstName: document.getElementById('f-firstName').value.trim(),
+    lastName: document.getElementById('f-lastName').value.trim(),
+    generation: document.getElementById('f-generation').value.trim(),
+    sex: document.getElementById('f-sex').value,
+    parentIds: [parent1, parent2].filter(Boolean),
+    spouseId: '',
+    birthDay: parseInt(document.getElementById('f-birthDay').value, 10) || 0,
+    yearBorn: document.getElementById('f-yearBorn').value.trim(),
+    status: document.getElementById('f-status').value,
+    nationality: document.getElementById('f-nationality').value.trim(),
+    yearOfDeath: document.getElementById('f-yearOfDeath') ? document.getElementById('f-yearOfDeath').value.trim() : '',
+    causeOfDeath: document.getElementById('f-causeOfDeath') ? document.getElementById('f-causeOfDeath').value.trim() : '',
+    yearMarried: '',
+    family: document.getElementById('f-family').value.trim(),
+    notes: document.getElementById('f-notes').value,
+  };
+}
+
+function saveSim(){
+  const vals = collectFormValues();
+  if(editingSimId === 'new'){
+    const newId = cryptoId();
+    const newSim = Object.assign({ id: newId, traits:[], aspirations:[], lifestyles:[], aspirationCompleted:{} }, vals);
+    // If triggered from add-child flow, inject the parent
+    if(pendingChildParentId){
+      if(!newSim.parentIds.includes(pendingChildParentId)) newSim.parentIds = [pendingChildParentId, ...newSim.parentIds].filter(Boolean);
+      pendingChildParentId = null;
+    }
+    state.sims.push(newSim);
+  } else {
+    Object.assign(state.sims.find(s => s.id === editingSimId), vals);
+  }
+  editingSimId = null;
+  persist();
+  showToast('Sim saved');
+}
+
+/* ---------------------------------------------------------
+   IMPORT / EXPORT
+--------------------------------------------------------- */
+function exportData(){
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'bond-chronicle-backup.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importData(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (evt) => {
+    try{
+      const parsed = JSON.parse(evt.target.result);
+      if(parsed && Array.isArray(parsed.sims)){ state = parsed; persist(); }
+      else alert("This file doesn't look like a Bond Chronicle backup.");
+    }catch(err){ alert("Could not read that file — make sure it's a backup saved from this app."); }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+render();
+</script>
+</body>
+</html>
